@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMA 2027 - Painel de Monitoramento</title>
+  <style>
+    /* PALETA DE CORES ORIGINAL DO PPTX */
+    :root {
+      --bg-page: #EBE5D9;         /* Fundo bege acinzentado claro */
+      --bg-panel: #FFFFFF;        /* Fundo branco dos cards */
+      --header-gold: #D8A55B;     /* Cabeçalho superior e botões ativos */
+      --header-brown: #8E5A31;    /* Botões inativos escuros */
+      --brown-light: #C29668;     /* Botões aba T1 */
+      --border-color: #D3C4B1;    
+      --text-dark: #222222;
+      --text-gray: #4A4A4A;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      
+      /* Cores das Bolhas (Temas) e SVG Icons */
+      --theme-green-light: #E1EBE2;
+      --theme-green-dark: #7A9F82;
+      --theme-teal-light: #DCE7E9;
+      --theme-teal-dark: #4A7A82;
+      --theme-yellow-light: #FDF3E1;
+      --theme-yellow-dark: #D4A045;
+      --theme-orange-light: #FDF3E1;
+      --theme-orange-dark: #C87A31;
+      --theme-brown-light: #F0E6DD;
+      --theme-brown-dark: #8E5A31;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    
+    body { background-color: var(--bg-page); color: var(--text-dark); padding: 15px 20px; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* CABEÇALHO */
+    .top-header {
+      background-color: var(--header-gold);
+      border-radius: 8px; padding: 14px 20px; display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 15px; box-shadow: var(--shadow);
+    }
+    .top-header h1 { color: #000; font-size: 18px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+    .home-btn {
+      position: absolute; right: 20px; background: rgba(0,0,0,0.1); border: none; border-radius: 6px; padding: 6px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;
+    }
+    .home-btn:hover { background: rgba(0,0,0,0.2); }
+    .home-btn svg { width: 26px; height: 26px; fill: #FFF; filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.3)); }
+
+    /* LAYOUT PRINCIPAL */
+    .main-layout { display: grid; grid-template-columns: 1fr 180px; gap: 15px; flex: 1; align-items: stretch; }
+    .content-area { display: flex; flex-direction: column; gap: 15px; }
+
+    /* FILTROS LATERAL */
+    .filter-sidebar {
+      background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px 12px;
+      display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow);
+    }
+    .filter-title { font-size: 13px; font-weight: 700; color: var(--text-dark); text-transform: uppercase; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; text-align: center; margin-bottom: 16px;}
+    .filter-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+    .filter-group label { font-size: 11px; font-weight: 600; color: var(--text-gray); text-transform: uppercase; }
+    .filter-group select { padding: 8px; font-size: 12px; border: 1px solid var(--border-color); border-radius: 6px; background-color: #FAFAFA; outline: none; }
+
+    /* MENU DE NAVEGAÇÃO */
+    .nav-tabs-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);
+    }
+    .nav-tab {
+      background-color: var(--header-brown); color: var(--white); border: 1px solid var(--border-color); border-right: none;
+      padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; text-transform: uppercase; transition: 0.2s;
+    }
+    .nav-tab:last-child { border-right: 1px solid var(--border-color); }
+    .nav-tab.active { background-color: var(--header-gold); color: #000; border-color: var(--header-gold); }
+    .nav-tab:hover:not(.active) { background-color: var(--brown-light); }
+
+    /* CONTAINERS GERAIS */
+    .view-container { display: none; flex-direction: column; gap: 15px; flex: 1; animation: fadeIn 0.3s ease-in; }
+    .view-container.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card-box { background-color: var(--bg-panel); border: 1px solid var(--header-gold); border-radius: 8px; padding: 16px; box-shadow: var(--shadow); }
+    .box-title { color: #000; font-size: 14px; font-weight: 800; text-align: center; margin-bottom: 12px; text-transform: uppercase; }
+
+    /* TELA 1 - PLANO DE METAS */
+    .t1-grid { display: grid; grid-template-columns: 45% 55%; gap: 15px; align-items: stretch; }
+    .t1-subtabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+    .t1-subtab { background-color: var(--brown-light); color: var(--white); border: none; padding: 8px 4px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; border-radius: 4px; text-transform: uppercase; transition: 0.2s;}
+    .t1-subtab.active { background-color: var(--header-brown); }
+    .t1-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px;}
+    .t1-mini-card { padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; font-size: 11px; text-transform: uppercase; line-height: 1.3; }
+    .mc-tan { background-color: var(--header-gold); color: #000; }
+    .mc-dark { background-color: var(--bg-page); color: #000; border: 1px solid var(--header-gold); }
+    .radar-svg { width: 100%; max-width: 480px; height: 300px; display: block; margin: 0 auto; }
+
+    /* TELA 2 - OBJETIVOS ESTRATÉGICOS */
+    .t2-top-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    .t2-obj-card { background-color: #92B095; border: 2px solid #92B095; border-radius: 6px; padding: 12px 8px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; min-height: 50px; }
+    .t2-obj-card.active { border-color: var(--theme-green-dark); background-color: var(--theme-green-dark); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .t2-obj-card.active .t2-obj-title, .t2-obj-card.active .t2-obj-desc { color: var(--white); }
+    .t2-obj-title { font-size: 11px; font-weight: 800; color: #FFF; text-transform: uppercase; }
+    .t2-obj-desc { font-size: 10px; font-weight: 600; color: #FFF; line-height: 1.2; }
+    
+    .t2-main-grid { display: grid; grid-template-columns: 32% 42% 24%; gap: 15px; align-items: stretch; }
+    .metas-subtabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+    .meta-subtab { background-color: var(--bg-page); color: var(--text-dark); border: 1px solid var(--border-color); padding: 8px; font-size: 11px; font-weight: 700; text-align: center; border-radius: 4px; cursor: pointer; transition: 0.2s;}
+    .meta-subtab.active { background-color: var(--header-gold); color: #000; border-color: var(--header-gold); }
+    .iniciativas-list { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 11px; margin-bottom: 15px; overflow-y: auto; max-height: 180px; padding-right: 5px;}
+    .iniciativa-item { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px; }
+    .badge-icon { width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #FFF; font-weight: bold; }
+    .bg-green { background-color: var(--theme-green-dark); } .bg-yellow { background-color: var(--theme-yellow-dark); }
+    
+    .t2-bottom-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 2px solid var(--border-color); padding-top: 12px; }
+    .t2-status-card { border-radius: 6px; padding: 10px; text-align: center; font-weight: 800; font-size: 11px; }
+
+    /* TELA 3 - MAPA DE TEMAS (COM ÍCONES E CORES) */
+    .t3-metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+    .metric-card { background: var(--bg-panel); border: 2px solid var(--header-gold); border-radius: 6px; padding: 12px; box-shadow: var(--shadow); text-align: center; }
+    .metric-title { font-size: 11px; font-weight: 700; color: var(--white); background: var(--header-gold); text-transform: uppercase; margin: -12px -12px 8px -12px; padding: 6px; border-radius: 4px 4px 0 0; }
+    .metric-value { font-size: 24px; font-weight: 900; color: #000; }
+    
+    .t3-themes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 10px; justify-items: center; }
+    .theme-circle {
+      width: 140px; height: 140px; border-radius: 50%; border: 3px solid; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 10px; cursor: pointer; box-shadow: var(--shadow); transition: all 0.3s ease; background: var(--white);
+    }
+    .theme-circle:hover { transform: translateY(-5px); box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.15); }
+    .theme-icon { width: 34px; height: 34px; margin-bottom: 6px; }
+    .theme-name { font-size: 11px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; color: #000; }
+    .theme-count { font-size: 10px; font-weight: 600; color: #333; }
+
+    /* Classes de Cor das Bolhas */
+    .tc-verde-claro { background-color: var(--theme-green-light); border-color: var(--theme-green-dark); }
+    .tc-verde-claro .theme-icon { fill: var(--theme-green-dark); }
+    .tc-teal { background-color: var(--theme-teal-light); border-color: var(--theme-teal-dark); }
+    .tc-teal .theme-icon { fill: var(--theme-teal-dark); }
+    .tc-amarelo { background-color: var(--theme-yellow-light); border-color: var(--theme-yellow-dark); }
+    .tc-amarelo .theme-icon { fill: var(--theme-yellow-dark); }
+    .tc-laranja { background-color: var(--theme-orange-light); border-color: var(--theme-orange-dark); }
+    .tc-laranja .theme-icon { fill: var(--theme-orange-dark); }
+    .tc-marrom { background-color: var(--theme-brown-light); border-color: var(--theme-brown-dark); }
+    .tc-marrom .theme-icon { fill: var(--theme-brown-dark); }
+
+    /* TELA 4 - ÁRVORE DINÂMICA */
+    .tree-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; align-items: start; }
+    .tree-header-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; font-weight: 800; color: #000; font-size: 11px; border-bottom: 2px solid var(--header-gold); padding-bottom: 10px; margin-bottom: 15px;}
+    .tree-content-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: start; }
+    .tree-column { display: flex; flex-direction: column; gap: 10px; }
+
+    .node-box { background-color: #FFF; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center; font-size: 11px; font-weight: 600; color: var(--text-dark); line-height: 1.3; transition: 0.2s; }
+    .node-desafio { background: var(--header-brown); color: white; border-color: var(--header-brown); font-weight: 700; }
+    .node-diretriz { background: var(--theme-brown-light); border-left: 4px solid var(--header-brown); }
+    .node-iniciativa { cursor: pointer; border: 2px solid var(--header-gold); background: white; }
+    .node-iniciativa:hover { background: var(--header-gold); color: black; transform: scale(1.02); }
+    
+    /* CARD DETALHE INICIATIVA */
+    .init-detail-card { background: var(--white); border-top: 4px solid var(--header-gold); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);}
+    .init-title-bar { color: #000; text-align: center; font-weight: 800; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+    .init-desc-box { font-size: 11px; color: var(--text-dark); text-align: justify; line-height: 1.4; background: var(--bg-page); padding: 10px; border-radius: 6px; }
+    .init-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .init-meta-box { background: var(--white); border: 1px solid var(--border-color); text-align: center; font-size: 10px; padding: 8px; border-radius: 6px; }
+    .init-meta-box b { display: block; font-size: 10px; color: var(--header-brown); margin-bottom: 4px; text-transform: uppercase; }
+    
+    .status-badge { display: inline-block; padding: 8px 12px; border-radius: 20px; font-weight: 800; font-size: 10px; text-transform: uppercase; text-align: center; margin-top: 5px; }
+    .status-andamento { background: var(--theme-yellow-light); color: var(--theme-yellow-dark); border: 1px solid var(--theme-yellow-dark); }
+    .status-concluida { background: var(--theme-green-light); color: var(--theme-green-dark); border: 1px solid var(--theme-green-dark); }
+    .status-vazio { background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;}
+
+    .btn-voltar { background: var(--header-brown); color: var(--white); border: none; padding: 8px 16px; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-bottom: 12px; transition: 0.2s; }
+    .btn-voltar:hover { background: var(--text-dark); }
+    
+    /* LATERAL LOGO & FOOTER */
+    .logo-container { text-align: center; margin-top: auto;}
+    .logo-text { font-weight: 800; font-size: 18px; color: var(--theme-teal-dark); margin-bottom: 5px; }
+    .footer-bar { margin-top: 15px; background-color: var(--header-gold); padding: 8px 15px; font-size: 10px; color: #000; font-weight: 700; border-radius: 4px;}
+  </style>
+</head>
+<body>
+
+  <header class="top-header">
+    <h1 id="header-title">PMA 2027 - Painel de Monitoramento</h1>
+    <button class="home-btn" onclick="mudarTela(2)" title="Início">
+      <svg viewBox="0 0 24 24"><path d="M12 3l10 9h-3v9h-14v-9h-3l10-9z"/></svg>
+    </button>
+  </header>
+
+  <div class="main-layout">
+    <div class="content-area">
+      <!-- NAVEGAÇÃO -->
+      <nav class="nav-tabs-bar">
+        <button class="nav-tab active" onclick="mudarTela(0)">Plano de Metas</button>
+        <button class="nav-tab" onclick="mudarTela(1)">Objetivos Estratégicos</button>
+        <button class="nav-tab" onclick="mudarTela(2)">Mapa De Temas</button>
+      </nav>
+
+      <!-- ================= TELA 1: PLANO DE METAS ================= -->
+      <div id="view-0" class="view-container active">
+        <div class="card-box">
+          <div class="box-title">O que é o Plano de Metas e Ações 2027?</div>
+          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-dark); text-align: justify;">
+            O Plano de Metas e Ações é o instrumento tático que operacionaliza as diretrizes do Plano Nacional de Mineração 2050, 
+            estruturando entregas concretas e monitorando o avanço das instituições nos eixos estratégicos do setor mineral brasileiro.
+          </p>
+        </div>
+
+        <div class="t1-grid">
+          <div class="card-box" style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div class="box-title" style="margin-bottom:12px;">O Plano Nacional de Mineração 2050</div>
+              <div class="t1-subtabs">
+                <button class="t1-subtab" onclick="selecionarSubAba('PILARES', this)">PILARES</button>
+                <button class="t1-subtab" onclick="selecionarSubAba('OBJ', this)">OBJ. ESTRAT.</button>
+                <button class="t1-subtab active" onclick="selecionarSubAba('DESAFIOS', this)">DESAFIOS</button>
+                <button class="t1-subtab" onclick="selecionarSubAba('DIRETRIZES', this)">DIRETRIZES</button>
+              </div>
+              <p id="t1-sub-descricao" style="font-size: 12px; line-height: 1.4; color: var(--text-gray); margin-bottom: 10px; min-height: 40px;">
+                Desafios são os entraves críticos de natureza regulatória, tecnológica e socioambiental que precisam ser superados para o alcance das metas do setor.
+              </p>
+            </div>
+            <div class="t1-cards-grid">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="t1-mini-card mc-tan">O PNM 2050 Estabeleceu</div>
+                <div class="t1-mini-card mc-dark" id="t1-card-val1" style="font-size: 14px;">32 Desafios Estratégicos</div>
+                <div class="t1-mini-card mc-tan">A Serem Superados até 2050</div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="t1-mini-card mc-dark">O PMA 2027 Contém</div>
+                <div class="t1-mini-card mc-tan" id="t1-card-val2" style="font-size: 14px; background-color: var(--header-brown); color: white; border: none;">37 Iniciativas</div>
+                <div class="t1-mini-card mc-dark">Associadas a <span id="t1-card-val3">32</span> Estruturas</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div class="box-title" style="font-size: 13px; text-decoration: underline;">Objetivos PNM 2050 x Iniciativas PMA 2027</div>
+            <svg id="radarChart" class="radar-svg" viewBox="0 0 500 320"></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TELA 2: OBJETIVOS ESTRATÉGICOS ================= -->
+      <div id="view-1" class="view-container">
+        <div class="t2-top-grid">
+          <div class="t2-obj-card active" onclick="selecionarObjetivo(1, this)">
+            <div class="t2-obj-title">Objetivo Estratégico 1</div>
+            <div class="t2-obj-desc" style="display: none;">Consolidar a Mineração Sustentável</div>
+          </div>
+          <div class="t2-obj-card" onclick="selecionarObjetivo(2, this)">
+            <div class="t2-obj-title">Objetivo Estratégico 2</div>
+            <div class="t2-obj-desc" style="display: none;">Ampliar o Conhecimento Geológico</div>
+          </div>
+          <div class="t2-obj-card" onclick="selecionarObjetivo(3, this)">
+            <div class="t2-obj-title">Objetivo Estratégico 3</div>
+            <div class="t2-obj-desc" style="display: none;">Promover Agregação de Valor</div>
+          </div>
+          <div class="t2-obj-card" onclick="selecionarObjetivo(4, this)">
+            <div class="t2-obj-title">Objetivo Estratégico 4</div>
+            <div class="t2-obj-desc" style="display: none;">Fortalecer Governança</div>
+          </div>
+          <div class="t2-obj-card" onclick="selecionarObjetivo(5, this)">
+            <div class="t2-obj-title">Objetivo Estratégico 5</div>
+            <div class="t2-obj-desc" style="display: none;">Assegurar Soberania Mineral</div>
+          </div>
+        </div>
+
+        <div class="t2-main-grid">
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div class="card-box">
+              <div class="box-title" style="text-decoration: underline;">O que Almeja?</div>
+              <p style="font-size: 11px; line-height: 1.4; color: var(--text-dark); text-align: justify;">
+                “Consolidar a mineração brasileira em uma atividade economicamente estratégica, socialmente inclusiva e ambientalmente responsável, contribuindo para o desenvolvimento regional.”
+              </p>
+            </div>
+            <div class="card-box" style="flex:1;">
+              <div class="box-title" style="text-decoration: underline;">Visão de Futuro</div>
+              <ul style="list-style: none; font-size: 11px; color: var(--text-dark); display: flex; flex-direction: column; gap: 8px;">
+                <li>• Desenvolvimento local e infraestrutura</li>
+                <li>• Geração de empregos e inclusão social</li>
+                <li>• Responsabilidade Socioambiental</li>
+                <li>• Governança e Integridade</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div class="box-title" style="margin-bottom: 8px;">Metas PNM 2050</div>
+            <div class="metas-subtabs">
+              <button class="meta-subtab active" onclick="selecionarMeta(1, this)">Meta 1</button>
+              <button class="meta-subtab" onclick="selecionarMeta(2, this)">Meta 2</button>
+              <button class="meta-subtab" onclick="selecionarMeta(3, this)">Meta 3</button>
+            </div>
+            <div style="text-align: center; font-weight: 700; color: #000; font-size: 12px; margin-bottom: 10px;" id="meta-titulo-grafico">
+              Planos de Fechamento de Mina Analisados
+            </div>
+            <svg viewBox="0 0 400 200" style="width:100%; height:auto;">
+              <!-- Linhas de grade -->
+              <line x1="40" y1="20" x2="380" y2="20" stroke="#D3C4B1" stroke-width="1"/>
+              <text x="10" y="24" font-size="9" fill="#4A4A4A">100%</text>
+              <line x1="40" y1="60" x2="380" y2="60" stroke="#D3C4B1" stroke-width="1"/>
+              <text x="10" y="64" font-size="9" fill="#4A4A4A">80%</text>
+              <line x1="40" y1="100" x2="380" y2="100" stroke="#D3C4B1" stroke-width="1"/>
+              <text x="10" y="104" font-size="9" fill="#4A4A4A">60%</text>
+              <line x1="40" y1="140" x2="380" y2="140" stroke="#D3C4B1" stroke-width="1"/>
+              <text x="10" y="144" font-size="9" fill="#4A4A4A">40%</text>
+              
+              <!-- Linha do Grafico -->
+              <path d="M50 170 L110 160 L180 140 L250 110 L320 60 L380 20" fill="none" stroke="#7A9F82" stroke-width="2"/>
+              <circle cx="50" cy="170" r="4" fill="#7A9F82"/>
+              <circle cx="110" cy="160" r="4" fill="#7A9F82"/>
+              <circle cx="180" cy="140" r="4" fill="#7A9F82"/>
+              <circle cx="250" cy="110" r="4" fill="#7A9F82"/>
+              <circle cx="320" cy="60" r="4" fill="#7A9F82"/>
+              <circle cx="380" cy="20" r="4" fill="#7A9F82"/>
+              
+              <!-- Indicador Atual -->
+              <circle cx="180" cy="160" r="5" fill="#D8A55B"/>
+              
+              <!-- Eixo X Anos -->
+              <text x="50" y="190" font-size="9" fill="#4A4A4A" text-anchor="middle">2025</text>
+              <text x="110" y="190" font-size="9" fill="#4A4A4A" text-anchor="middle">2030</text>
+              <text x="180" y="190" font-size="9" fill="#4A4A4A" text-anchor="middle">2035</text>
+              <text x="250" y="190" font-size="9" fill="#4A4A4A" text-anchor="middle">2040</text>
+              <text x="320" y="190" font-size="9" fill="#4A4A4A" text-anchor="middle">2045</text>
+              <text x="380" y="190" font-size="9" fill="#4A4A4A" text-anchor="middle">2050</text>
+            </svg>
+            <div style="display:flex; justify-content:center; gap:15px; font-size:10px; margin-top:5px;">
+              <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:2px; background:#7A9F82;"></span> Cenário Desejado</span>
+              <span style="display:flex; align-items:center; gap:4px;"><span style="width:8px; height:8px; background:#D8A55B; border-radius:50%;"></span> Status Atual</span>
+            </div>
+          </div>
+
+          <div class="card-box" style="display:flex; flex-direction:column; justify-content:space-between; padding: 12px;">
+            <div>
+              <div class="box-title" style="font-size:12px; margin-bottom:10px;">Iniciativas Vinculadas</div>
+              <ul class="iniciativas-list">
+                <li class="iniciativa-item"><span>GT - Redução de Rejeitos</span><span class="badge-icon bg-yellow">↻</span></li>
+                <li class="iniciativa-item"><span>Taxonomia Sustentável</span><span class="badge-icon bg-yellow">↻</span></li>
+                <li class="iniciativa-item"><span>Sistema SIGBM 2.0</span><span class="badge-icon bg-green">✓</span></li>
+                <li class="iniciativa-item"><span>Aperfeiçoamento Res. 68</span><span class="badge-icon bg-green">✓</span></li>
+                <li class="iniciativa-item"><span>Prêmio Municípios</span><span class="badge-icon bg-yellow">↻</span></li>
+                <li class="iniciativa-item"><span>PAN-MAPE de Ouro</span><span class="badge-icon bg-green">✓</span></li>
+              </ul>
+            </div>
+            <div class="t2-bottom-cards">
+              <div class="t2-status-card" style="background:var(--theme-yellow-light); color:var(--theme-yellow-dark); border:1px solid var(--theme-yellow-dark);">EM ANDAMENTO<br>15</div>
+              <div class="t2-status-card" style="background:var(--theme-green-light); color:var(--theme-green-dark); border:1px solid var(--theme-green-dark);">CONCLUÍDAS<br>10</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TELA 3: MAPA DE TEMAS (COM ÍCONES E CORES ORIGINAIS) ================= -->
+      <div id="view-2" class="view-container">
+        <div class="t3-metrics-grid">
+          <div class="metric-card"><div class="metric-title">Total de Desafios Estratégicos</div><div class="metric-value">32</div></div>
+          <div class="metric-card"><div class="metric-title">Total de Temas</div><div class="metric-value">9</div></div>
+          <div class="metric-card"><div class="metric-title">Total de Iniciativas</div><div class="metric-value">37</div></div>
+          <div class="metric-card"><div class="metric-title">Total de Diretrizes</div><div class="metric-value">77</div></div>
+        </div>
+
+        <div class="card-box">
+          <div class="t3-themes-grid">
+            
+            <!-- 1. Responsabilidade Socioambiental (Planta / Folhas) - Verde Claro -->
+            <div class="theme-circle tc-verde-claro" onclick="abrirTema('Responsabilidade Socioambiental')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M12 22v-7c0-2.76 2.24-5 5-5h2c-2.76 0-5-2.24-5-5V3c0 2.76-2.24 5-5 5H7c2.76 0 5 2.24 5 5v2c-2.76 0-5 2.24-5 5H5c2.76 0 5 2.24 5 5v2z"/>
+              </svg>
+              <div class="theme-name">Responsabilidade<br>Socioambiental</div>
+              <div class="theme-count">8 Iniciativas</div>
+            </div>
+
+            <!-- 2. Pesquisa Mineral (Engrenagem) - Amarelo/Mostarda -->
+            <div class="theme-circle tc-amarelo" onclick="abrirTema('Pesquisa Mineral e Produção')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 C9.64,21.83,9.84,22,10.08,22h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+              </svg>
+              <div class="theme-name">Pesquisa Mineral e<br>Desenvolvimento da<br>Produção</div>
+              <div class="theme-count">Sem Dados</div>
+            </div>
+
+            <!-- 3. Tecnologia e Agregação (Gráfico/Fábrica) - Marrom/Bege -->
+            <div class="theme-circle tc-marrom" onclick="abrirTema('Tecnologia e Agregação de Valor')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+              </svg>
+              <div class="theme-name">Tecnologia e<br>Agregação de Valor</div>
+              <div class="theme-count">Sem Dados</div>
+            </div>
+
+            <!-- 4. Conhecimento Geológico (Pedras/Montanha) - Teal/Azul Petróleo -->
+            <div class="theme-circle tc-teal" onclick="abrirTema('Conhecimento Geológico')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/>
+              </svg>
+              <div class="theme-name">Conhecimento<br>Geológico e de<br>Recursos Minerais</div>
+              <div class="theme-count">11 Iniciativas</div>
+            </div>
+
+            <!-- 5. Mineração Valor Social (Diamante) - Verde Claro -->
+            <div class="theme-circle tc-verde-claro" onclick="abrirTema('Mineração com Valor Social')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M12.16 3h-.32L9.21 8.25h5.58L12.16 3zm4.3 5.25h5.16l-2.07-4.14-3.09 4.14zM2.38 8.25h5.16l-3.09-4.14L2.38 8.25zM12 21.6l8.8-11.85H3.2L12 21.6z"/>
+              </svg>
+              <div class="theme-name">Mineração com<br>Valor Social</div>
+              <div class="theme-count">2 Iniciativas</div>
+            </div>
+
+            <!-- 6. Governança Institucional (Prédio Público) - Amarelo/Mostarda -->
+            <div class="theme-circle tc-amarelo" onclick="abrirTema('Governança Institucional')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M12 2L1 8v2h22V8L12 2zM3 10h3v7H3v-7zm6 0h3v7H9v-7zm6 0h3v7h-3v-7zm6 0h3v7h-3v-7zM1 19h22v2H1v-2z"/>
+              </svg>
+              <div class="theme-name">Governança<br>Institucional na<br>Mineração</div>
+              <div class="theme-count">Sem Dados</div>
+            </div>
+
+            <!-- 7. Minerais Críticos (Picareta) - Laranja/Terracota -->
+            <div class="theme-circle tc-laranja" onclick="abrirTema('Minerais Críticos e Estratégicos')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M21 2L14.5 4l2.5 2.5-7.5 7.5-1.5-1.5L2 18.5l4 4L14 16.5l-1.5-1.5 7.5-7.5L22.5 10 21 2z"/>
+              </svg>
+              <div class="theme-name">Minerais Críticos e<br>Estratégicos</div>
+              <div class="theme-count">Sem Dados</div>
+            </div>
+
+            <!-- 8. Imagem e Comunicação (Balões Chat) - Marrom/Bege -->
+            <div class="theme-circle tc-marrom" onclick="abrirTema('Imagem e Comunicação')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0-3h10v2H7z"/>
+              </svg>
+              <div class="theme-name">Imagem e<br>Comunicação<br>Institucional</div>
+              <div class="theme-count">Sem Dados</div>
+            </div>
+
+            <!-- 9. Ambiente Regulatório (Lâmpada/Mão) - Teal/Azul Petróleo -->
+            <div class="theme-circle tc-teal" onclick="abrirTema('Ambiente Regulatório e Mercado')">
+              <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M12 2C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1zM10 20h4v2h-4z"/>
+              </svg>
+              <div class="theme-name">Ambiente Regulatório<br>e Oportunidades de<br>Mercado</div>
+              <div class="theme-count">Sem Dados</div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TELA 4: ÁRVORE DINÂMICA ================= -->
+      <div id="view-3" class="view-container">
+        <div>
+          <button class="btn-voltar" onclick="mudarTela(2)">← Voltar ao Mapa de Temas</button>
+          <h2 id="tema-detalhe-titulo" style="font-size: 15px; font-weight: 800; color: #000; text-transform: uppercase;"></h2>
+        </div>
+
+        <div class="tree-layout">
+          <!-- Coluna Esquerda: Árvore Gerada via JS -->
+          <div class="card-box" style="padding: 20px;">
+            <div class="tree-header-cols">
+              <div>DESAFIOS (PNM 2050)</div>
+              <div>DIRETRIZES</div>
+              <div>INICIATIVAS (PMA 2027)</div>
+            </div>
+            <div class="tree-content-grid">
+              <div class="tree-column" id="col-desafios"></div>
+              <div class="tree-column" id="col-diretrizes"></div>
+              <div class="tree-column" id="col-iniciativas"></div>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Detalhe -->
+          <div class="init-detail-card" id="card-detalhe-iniciativa" style="display:none;">
+            <div class="init-title-bar" id="detalhe-nome">Nome da Iniciativa</div>
+            <div class="init-desc-box">
+              <b style="color:var(--header-brown);display:block;margin-bottom:4px;">Descrição:</b>
+              <span id="detalhe-desc"></span>
+            </div>
+            <div class="init-desc-box" style="background:var(--theme-yellow-light);">
+              <b style="color:var(--header-gold);display:block;margin-bottom:4px;">Objetivo:</b>
+              <span id="detalhe-objetivo"></span>
+            </div>
+            <div class="init-meta-grid">
+              <div class="init-meta-box"><b>Natureza</b><span id="detalhe-natureza"></span></div>
+              <div class="init-meta-box"><b>Unidade</b><span id="detalhe-unidade"></span></div>
+            </div>
+            <div style="text-align: center;">
+              <span class="status-badge" id="detalhe-status"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LATERAL FILTROS & LOGO -->
+    <aside class="filter-sidebar">
+      <div>
+        <div class="filter-title">Filtros</div>
+        <div class="filter-group">
+          <label>Instituição</label>
+          <select><option>Todas</option><option>ANM</option><option>MME</option><option>SGB</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Pilar</label>
+          <select><option>Todos</option><option>Sustentável</option><option>Geológico</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Ano</label>
+          <select><option>2027</option><option>2028</option></select>
+        </div>
+      </div>
+      <div class="logo-container">
+        <div class="logo-text">PMA 2027</div>
+        <!-- Logo Montanhas do Banner -->
+        <svg viewBox="0 0 200 80" style="width: 100%;">
+          <path d="M10 75 L60 30 L110 75 Z" fill="#4A7A82"/>
+          <path d="M50 75 L110 20 L170 75 Z" fill="#2E4A4E"/>
+          <path d="M90 75 L145 40 L195 75 Z" fill="#D8A55B"/>
+          <path d="M130 75 L165 55 L200 75 Z" fill="#8E5A31"/>
+          <path d="M0 75 L200 75" stroke="#333" stroke-width="2"/>
+        </svg>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="footer-bar">
+    Desenvolvido pela SNGM/MME a partir de dados elaborados no Departamento de Planejamento e Política Mineral - DPPM/MME
+  </footer>
+
+  <script>
+    // DADOS REAIS EXTRAÍDOS E DADOS MOCKADOS PARA COMPLETAR OS 9 TEMAS
+    const baseDadosExcel = {
+      "Responsabilidade Socioambiental": {
+        "Planejamento e execução responsáveis do fechamento de mina, visando à recuperação ambiental": {
+          "Promover o aprimoramento da regulamentação do fechamento de mina": [
+            {"id": "PMA-018", "nome": "GT - Redução de Rejeitos (PNRRM)", "descricao": "Grupo de Trabalho para proposição de um Programa Nacional de Redução e Reaproveitamento de Rejeitos...", "objetivo": "Implementar agenda de trabalho voltada à reciclagem, reaproveitamento e redução de rejeitos.", "natureza": "Ação", "unidade": "DDSM", "status": "Em validação"},
+            {"id": "PMA-021", "nome": "Taxonomia Sustentável (TSB)", "descricao": "Coordenação do GT CNAE B e elaboração de critérios técnicos para classificar atividades extrativas na TSB.", "objetivo": "Estabelecer critérios técnicos claros, verificáveis e adequados às características da indústria extrativa.", "natureza": "Regulação", "unidade": "DDSM", "status": "Em validação"},
+            {"id": "PMA-040", "nome": "Sistema Integrado de Barragens 2.0", "descricao": "O SIGBM 2.0 será uma versão mais responsiva do sistema, com arquitetura Clean e IA.", "objetivo": "Permitir maior dinamismo, melhor gerenciamento e uma atuação mais integrada em segurança de barragens.", "natureza": "Projeto", "unidade": "SSBPM", "status": "Em execução"},
+            {"id": "PMA-042", "nome": "Aperfeiçoamento da Res. 68/2021", "descricao": "A ANM revisa a Resolução nº 68/2021 para modernizar a regulamentação do fechamento de minas.", "objetivo": "Aumentar a eficiência e a segurança jurídica, prevenir o abandono de minas e promover sustentabilidade.", "natureza": "Regulação", "unidade": "SFI", "status": "Em execução"}
+          ]
+        }
+      },
+      "Mineração com Valor Social": {
+        "Aprimoramento da capacidade institucional e administrativa dos municípios mineradores": {
+          "Implementar programas de capacitação e assessoramento técnico contínuo para gestores municipais": [
+            {"id": "PMA-019", "nome": "PAN-MAPE de Ouro", "descricao": "Coordenação e elaboração do Plano de Ação Nacional para mineração artesanal.", "objetivo": "Implementar as estratégias da Convenção de Minamata voltadas à eliminação do uso de mercúrio.", "natureza": "Projeto", "unidade": "DDSM", "status": "Em validação"},
+            {"id": "PMA-020", "nome": "Prêmio Municípios Mineradores", "descricao": "Realização do Prêmio Municípios Mineradores.", "objetivo": "Reconhecimento e difusão de boas práticas de governança pública em municípios com mineração.", "natureza": "Evento", "unidade": "DDSM", "status": "Em validação"}
+          ]
+        }
+      },
+      "Conhecimento Geológico": {
+        "Fortalecimento da base de dados nacional de geologia e de recursos minerais": {
+          "Ampliar investimentos em levantamentos geológicos e infraestrutura de TI": [
+            {"id": "PMA-001", "nome": "Levantamentos Geofísicos", "descricao": "Aquisição de dados geofísicos por sensores instalados em aeronaves para subsidiar mapeamento.", "objetivo": "Priorizar os métodos de aerolevantamento com foco em distritos e províncias minerais.", "natureza": "Ação", "unidade": "DGM", "status": "Em execução"},
+            {"id": "PMA-004", "nome": "Mapeamento Geológico", "descricao": "Envolve compilação de dados, levantamentos de campo e caracterização de rochas.", "objetivo": "Priorizar as escalas de referência 1:250.000 e 1:100.000 para mapeamento sistemático.", "natureza": "Ação", "unidade": "DGM", "status": "Em execução"}
+          ]
+        }
+      },
+      // OS 6 TEMAS AUSENTES NA PLANILHA FORAM ADICIONADOS PARA COMPLETAR O SISTEMA
+      "Pesquisa Mineral e Produção": { "Fomentar o avanço da pesquisa e da produção mineral": { "Incentivar programas de mapeamento detalhado": [{"nome": "Aguardando Base de Dados", "descricao": "Sem dados mapeados no Excel.", "objetivo": "-", "natureza": "-", "unidade": "-", "status": "Vazio"}] } },
+      "Tecnologia e Agregação de Valor": { "Desenvolver cadeias produtivas tecnológicas": { "Fomentar parcerias público-privadas": [{"nome": "Aguardando Base de Dados", "descricao": "Sem dados mapeados no Excel.", "objetivo": "-", "natureza": "-", "unidade": "-", "status": "Vazio"}] } },
+      "Governança Institucional": { "Elevar o padrão de governança do setor": { "Implementar processos transparentes": [{"nome": "Aguardando Base de Dados", "descricao": "Sem dados mapeados no Excel.", "objetivo": "-", "natureza": "-", "unidade": "-", "status": "Vazio"}] } },
+      "Minerais Críticos e Estratégicos": { "Assegurar o suprimento para a transição energética": { "Mapear o potencial nacional": [{"nome": "Aguardando Base de Dados", "descricao": "Sem dados mapeados no Excel.", "objetivo": "-", "natureza": "-", "unidade": "-", "status": "Vazio"}] } },
+      "Imagem e Comunicação": { "Melhorar a percepção da sociedade sobre a mineração": { "Criar campanhas institucionais de transparência": [{"nome": "Aguardando Base de Dados", "descricao": "Sem dados mapeados no Excel.", "objetivo": "-", "natureza": "-", "unidade": "-", "status": "Vazio"}] } },
+      "Ambiente Regulatório e Mercado": { "Modernizar a estrutura regulatória": { "Revisar normativos defasados": [{"nome": "Aguardando Base de Dados", "descricao": "Sem dados mapeados no Excel.", "objetivo": "-", "natureza": "-", "unidade": "-", "status": "Vazio"}] } }
+    };
+
+    function mudarTela(indice) {
+      document.querySelectorAll('.view-container').forEach((v, i) => { v.classList.toggle('active', i === indice); });
+      document.querySelectorAll('.nav-tab').forEach((t, i) => { t.classList.toggle('active', i === indice); });
+      
+      const titulos = ["PLANO DE METAS", "OBJETIVOS ESTRATÉGICOS", "MAPA DE TEMAS"];
+      document.getElementById('header-title').innerText = "PMA 2027 - " + titulos[indice];
+
+      if(indice === 0) desenharRadar();
+    }
+
+    // LÓGICA DA TELA 1 (SUBABAS)
+    const subAbasDados = {
+      PILARES: { desc: "Pilares são os grandes eixos estruturantes que sustentam o PNM 2050.", v1: "5 Pilares", v3: "5 Pilares" },
+      OBJ: { desc: "Objetivos Estratégicos orientam a formulação de políticas públicas de longo prazo.", v1: "15 Objetivos", v3: "15 Objetivos" },
+      DESAFIOS: { desc: "Desafios são os entraves críticos de natureza regulatória, tecnológica e socioambiental.", v1: "32 Desafios", v3: "32 Desafios" },
+      DIRETRIZES: { desc: "Diretrizes balizam a execução das ações governamentais pactuadas.", v1: "77 Diretrizes", v3: "77 Diretrizes" }
+    };
+
+    function selecionarSubAba(chave, btn) {
+      document.querySelectorAll('.t1-subtab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('t1-sub-descricao').innerText = subAbasDados[chave].desc;
+      document.getElementById('t1-card-val1').innerText = subAbasDados[chave].v1;
+      document.getElementById('t1-card-val3').innerText = subAbasDados[chave].v3;
+    }
+
+    // LÓGICA DA TELA 2 (METAS E OBJETIVOS)
+    function selecionarObjetivo(num, btn) {
+      document.querySelectorAll('.t2-obj-card').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function selecionarMeta(num, btn) {
+      document.querySelectorAll('.meta-subtab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const titulos = ["Planos de Fechamento de Mina Analisados", "Índice de Diversificação Regional", "Transparência nos Processos"];
+      document.getElementById('meta-titulo-grafico').innerText = titulos[num-1];
+    }
+
+    // LÓGICA DA TELA 3 E 4 (ÁRVORE DINÂMICA)
+    function abrirTema(tema) {
+      document.getElementById('tema-detalhe-titulo').innerText = tema;
+      
+      document.querySelectorAll('.view-container').forEach((v, i) => { v.classList.toggle('active', i === 3); });
+      document.getElementById('header-title').innerText = "PMA 2027 - DETALHAMENTO DO TEMA";
+      renderizarArvore(tema);
+    }
+
+    function renderizarArvore(tema) {
+      const colDesafios = document.getElementById('col-desafios');
+      const colDiretrizes = document.getElementById('col-diretrizes');
+      const colIniciativas = document.getElementById('col-iniciativas');
+      
+      colDesafios.innerHTML = ''; colDiretrizes.innerHTML = ''; colIniciativas.innerHTML = '';
+      document.getElementById('card-detalhe-iniciativa').style.display = 'none';
+
+      const dadosTema = baseDadosExcel[tema];
+      if(!dadosTema) return;
+
+      Object.keys(dadosTema).forEach(desafio => {
+        let nodeDesafio = document.createElement('div');
+        nodeDesafio.className = 'node-box node-desafio';
+        nodeDesafio.innerText = desafio;
+        colDesafios.appendChild(nodeDesafio);
+
+        Object.keys(dadosTema[desafio]).forEach(diretriz => {
+          let nodeDiretriz = document.createElement('div');
+          nodeDiretriz.className = 'node-box node-diretriz';
+          nodeDiretriz.innerText = diretriz;
+          colDiretrizes.appendChild(nodeDiretriz);
+
+          dadosTema[desafio][diretriz].forEach(iniciativa => {
+            let nodeInit = document.createElement('div');
+            nodeInit.className = 'node-box node-iniciativa';
+            nodeInit.innerText = iniciativa.nome;
+            nodeInit.onclick = () => mostrarDetalhes(iniciativa);
+            colIniciativas.appendChild(nodeInit);
+          });
+        });
+      });
+    }
+
+    function mostrarDetalhes(iniciativa) {
+      document.getElementById('card-detalhe-iniciativa').style.display = 'flex';
+      document.getElementById('detalhe-nome').innerText = iniciativa.nome;
+      document.getElementById('detalhe-desc').innerText = iniciativa.descricao;
+      document.getElementById('detalhe-objetivo').innerText = iniciativa.objetivo;
+      document.getElementById('detalhe-natureza').innerText = iniciativa.natureza;
+      document.getElementById('detalhe-unidade').innerText = iniciativa.unidade;
+      
+      const statusBox = document.getElementById('detalhe-status');
+      statusBox.innerText = iniciativa.status.toUpperCase();
+      
+      if(iniciativa.status.toLowerCase().includes('execução') || iniciativa.status.toLowerCase() === 'concluída') {
+        statusBox.className = 'status-badge status-concluida';
+      } else if (iniciativa.status.toLowerCase() === 'vazio') {
+        statusBox.className = 'status-badge status-vazio';
+        statusBox.innerText = 'SEM DADOS';
+      } else {
+        statusBox.className = 'status-badge status-andamento';
+      }
+    }
+
+    // GRÁFICO RADAR (TELA 1)
+    function desenharRadar() {
+      const svg = document.getElementById('radarChart');
+      if(!svg) return;
+      const cx = 250, cy = 160, raio = 110, niveis = 5;
+      const eixos = [
+        { label: "Sustentabilidade", angle: -Math.PI / 2 },
+        { label: "Geológico", angle: -Math.PI / 2 + (2 * Math.PI / 5) },
+        { label: "Agregação de Valor", angle: -Math.PI / 2 + (4 * Math.PI / 5) },
+        { label: "Governança", angle: -Math.PI / 2 + (6 * Math.PI / 5) },
+        { label: "Soberania", angle: -Math.PI / 2 + (8 * Math.PI / 5) }
+      ];
+
+      let html = '';
+      for (let n = 1; n <= niveis; n++) {
+        let pts = '';
+        eixos.forEach(e => {
+          let r = (n / niveis) * raio;
+          pts += `${cx + r * Math.cos(e.angle)},${cy + r * Math.sin(e.angle)} `;
+        });
+        html += `<polygon points="${pts.trim()}" fill="none" stroke="#D3C4B1" stroke-width="1" />`;
+      }
+
+      eixos.forEach(e => {
+        let x2 = cx + raio * Math.cos(e.angle), y2 = cy + raio * Math.sin(e.angle);
+        html += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#D3C4B1" stroke-width="1" />`;
+        let lx = cx + (raio + 25) * Math.cos(e.angle), ly = cy + (raio + 10) * Math.sin(e.angle);
+        html += `<text x="${lx}" y="${ly}" font-size="10" font-weight="600" fill="#4A4A4A" text-anchor="middle">${e.label}</text>`;
+      });
+
+      const series = [
+        { cor: "#7A9F82", valores: [0.9, 0.5, 0.4, 0.8, 0.7] }, // Verde tema
+        { cor: "#D8A55B", valores: [0.6, 0.3, 0.5, 0.5, 0.4] }  // Mostarda tema
+      ];
+
+      series.forEach(s => {
+        let pts = '';
+        s.valores.forEach((v, idx) => {
+          let r = v * raio;
+          pts += `${cx + r * Math.cos(eixos[idx].angle)},${cy + r * Math.sin(eixos[idx].angle)} `;
+        });
+        html += `<polygon points="${pts.trim()}" fill="${s.cor}" fill-opacity="0.2" stroke="${s.cor}" stroke-width="2" />`;
+      });
+      svg.innerHTML = html;
+    }
+    
+    // Inicia na Tela Mapa de Temas para exibir os botões com ícones logo de cara
+    mudarTela(2);
+  </script>
+</body>
+</html>
