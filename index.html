@@ -23,14 +23,7 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .home:hover{background:rgba(0,0,0,.22)}
 .home svg{width:26px;height:26px;fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 
-/* Filtros Horizontais */
-.filters-bar{background:#fff;border:1px solid var(--gold);border-radius:var(--r);padding:12px 20px;display:flex;gap:15px;align-items:center;box-shadow:var(--sh);flex-wrap:wrap;margin-bottom:4px}
-.filters-bar .ftt{font-size:13px;font-weight:800;color:var(--green);text-transform:uppercase;margin-right:10px}
-.filters-bar label{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:#4A4A4A;text-transform:uppercase}
-.filters-bar select{padding:6px 12px;font-size:11px;border:1px solid #CCC;border-radius:4px;background:#FAFAFA;outline:none;transition:.2s}
-.filters-bar select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(216,165,91,.3)}
-
-/* Layout 100% Livre */
+/* Layout 100% Livre (Filtros removidos) */
 .layout{display:flex;flex-direction:column;gap:var(--g);flex:1}
 .main{display:flex;flex-direction:column;gap:var(--g);min-width:0}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);border-radius:var(--r);overflow:hidden;border:0;box-shadow:var(--sh)}
@@ -127,8 +120,8 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 #wires{position:absolute;left:0;top:0;pointer-events:none}#wires path{fill:none;stroke:var(--brown);stroke-width:2}
 .tcol{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
 
-/* Capa de Entrada */
-#cover {position:fixed;inset:0;background:url('Capa BI PMA2027.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
+/* Nova Capa Atualizada */
+#cover {position:fixed;inset:0;background:url('Capa BI PMA.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
 #cover button {background:#3B6350;color:#fff;border:2px solid #fff;padding:16px 48px;font-size:18px;font-weight:800;border-radius:30px;cursor:pointer;text-transform:uppercase;box-shadow:0 8px 16px rgba(0,0,0,0.3);transition:transform 0.3s, background 0.3s;letter-spacing:1px;}
 #cover button:hover {background:#C49A45;transform:translateY(-3px);}
 
@@ -140,7 +133,7 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 </head>
 <body>
 
-<!-- CAPA PMA 2027 -->
+<!-- CAPA PMA 2027 (Imagem atualizada) -->
 <div id="cover">
     <button onclick="document.getElementById('cover').style.display='none'">Entrar no Painel</button>
 </div>
@@ -161,16 +154,6 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 </header>
 
 <div class="layout">
-    <!-- FILTROS REPOSICIONADOS HORIZONTALMENTE -->
-    <div class="filters-bar">
-        <div class="ftt">Filtros</div>
-        <label>Tema<select id="f-tema" onchange="flt()"></select></label>
-        <label>Situação<select id="f-sit" onchange="flt()"></select></label>
-        <label>Unidade<select id="f-uni" onchange="flt()"></select></label>
-        <label>Natureza<select id="f-nat" onchange="flt()"></select></label>
-        <button class="btn" onclick="limpa()" style="margin-left:auto">Limpar filtros</button>
-    </div>
-
     <div class="main">
         <nav class="tabs"><button class="tab" onclick="go(0)">Plano de Metas</button><button class="tab" onclick="go(1)">Objetivos Estratégicos</button><button class="tab" onclick="go(2)">Mapa de Temas</button></nav>
         <section class="view" id="v0"></section>
@@ -194,11 +177,16 @@ const SUB={PILARES:'Pilares são os grandes eixos estruturantes que sustentam o 
 const IC={planta:'M12 22v-7c0-2.76 2.24-5 5-5h2c-2.76 0-5-2.24-5-5V3c0 2.76-2.24 5-5 5H7c2.76 0 5 2.24 5 5v2c-2.76 0-5 2.24-5 5H5c2.76 0 5 2.24 5 5v2z',eng:'M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 C9.64,21.83,9.84,22,10.08,22h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z',graf:'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z',mont:'M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z',diam:'M12.16 3h-.32L9.21 8.25h5.58L12.16 3zm4.3 5.25h5.16l-2.07-4.14-3.09 4.14zM2.38 8.25h5.16l-3.09-4.14L2.38 8.25zM12 21.6l8.8-11.85H3.2L12 21.6z',pred:'M12 2L1 8v2h22V8L12 2zM3 10h3v7H3v-7zm6 0h3v7H9v-7zm6 0h3v7h-3v-7zm6 0h3v7h-3v-7zM1 19h22v2H1v-2z',pica:'M21 2L14.5 4l2.5 2.5-7.5 7.5-1.5-1.5L2 18.5l4 4L14 16.5l-1.5-1.5 7.5-7.5L22.5 10 21 2z',chat:'M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0-3h10v2H7z',luz:'M12 2C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1zM10 20h4v2h-4z'};
 const VISU=[[/Socioambiental/,'tcv','planta'],[/Pesquisa Mineral/,'tca','eng'],[/Tecnologia/,'tcm','graf'],[/Conhecimento Geol/,'tct','mont'],[/Valor Social/,'tcv','diam'],[/Governan/,'tca','pred'],[/Cr[ií]ticos/,'tco','pica'],[/Imagem/,'tcm','chat'],[/Regulat/,'tct','luz']];
 const VIS=n=>{const v=VISU.find(x=>x[0].test(n))||[0,'tcm','graf'];return[v[1],IC[v[2]]]};
-const S={tab:0,sub:'DESAFIOS',oe:1,tema:null,dz:null,dr:null,ini:null,f:{tema:'',sit:'',uni:'',nat:''}};
+
+/* Estado sem variáveis de filtro */
+const S={tab:0,sub:'DESAFIOS',oe:1,tema:null,dz:null,dr:null,ini:null};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const uniq=a=>[...new Set(a)];
-const F=()=>DATA.ini.filter(i=>(!S.f.tema||i.temas.includes(S.f.tema))&&(!S.f.sit||i.sit===S.f.sit)&&(!S.f.uni||i.unidade===S.f.uni)&&(!S.f.nat||i.nat===S.f.nat));
+
+/* O filtro foi removido da lógica. Agora ele apenas retorna todos os dados baseados na planilha (DATA.ini) */
+const F=()=>DATA.ini; 
+
 const dirsDe=l=>uniq(l.flatMap(i=>i.dirs));
 const DIR={};DATA.dirs.forEach(d=>DIR[d.i]=d);const TEMAS=uniq(DATA.dirs.map(d=>d.tema)),NDES=uniq(DATA.dirs.map(d=>d.desafio)).length,ADER=['não aderente','aderência parcial','muito aderente','sem diretriz'];
 const DESAFIOS=()=>uniq(DATA.dirs.filter(d=>d.tema===S.tema).map(d=>d.desafio));
@@ -209,9 +197,7 @@ const pct=(a,b)=>b?Math.round(a/b*100):0;
 function go(n){S.tab=n;document.querySelectorAll('.view').forEach((v,i)=>v.classList.toggle('on',i===n));
  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',i===n));
  $('ttl').textContent='PLANO DE METAS E AÇÕES (PMA) 2027 - '+(n<3?TIT[n]:S.tema.toUpperCase());render()}
-function flt(){S.f={tema:$('f-tema').value,sit:$('f-sit').value,uni:$('f-uni').value,nat:$('f-nat').value};render()}
-function limpa(){['tema','sit','uni','nat'].forEach(k=>$('f-'+k).value='');flt()}
-function opts(id,lbl,vals){$(id).innerHTML=`<option value="">${lbl}</option>`+vals.sort().map(v=>`<option>${esc(v)}</option>`).join('')}
+
 function render(){[r0,r1,r2,r3][S.tab]()}
 
 function subVals(l){
@@ -289,8 +275,7 @@ function liga(){const c=$('tree'),w=$('wires');if(!c||S.tab!==3)return;const R=c
  w.setAttribute('width',c.scrollWidth);w.setAttribute('height',c.scrollHeight);w.innerHTML=h}
 window.addEventListener('resize',liga);
 
-opts('f-tema','Todos',TEMAS);opts('f-sit','Todas',uniq(DATA.ini.map(i=>i.sit)));
-opts('f-uni','Todas',uniq(DATA.ini.map(i=>i.unidade)));opts('f-nat','Todas',uniq(DATA.ini.map(i=>i.nat)));
+/* Setup inicial */
 go(0);
 </script>
 </body>
