@@ -242,4 +242,62 @@ function radar(l){
  const n=DATA.oe.length,cx=260,cy=180,R=112,ang=k=>-Math.PI/2+2*Math.PI*k/n,pt=(k,r)=>[cx+r*Math.cos(ang(k)),cy+r*Math.sin(ang(k))];
  const a=DATA.oe.map(o=>l.filter(i=>i.oeV===o.id).length),b=DATA.oe.map(o=>l.filter(i=>i.oeV===o.id&&i.ader===2).length),mx=Math.max(4,...a);
  let s='';
- for(let g=1;g<=4;g++){s+=`<polygon points="${DATA.oe.map((_,k)=>pt(k,R*g/4).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="
+ for(let g=1;g<=4;g++){s+=`<polygon points="${DATA.oe.map((_,k)=>pt(k,R*g/4).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="${cx+4}" y="${cy-R*g/4+3}" font-size="8" fill="#999">${Math.round(mx*g/4)}</text>`}
+ DATA.oe.forEach((o,k)=>{const[x,y]=pt(k,R),[lx,ly]=pt(k,R+16),c=Math.cos(ang(k));
+  s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E0D0B0"/><text x="${lx}" y="${ly+3}" font-size="10" font-weight="700" fill="#333" text-anchor="${Math.abs(c)<.2?'middle':c>0?'start':'end'}">OE ${o.id} · ${esc(CFG.oeCurto[k]||'')}</text>`});
+ [[a,'#A0662A'],[b,'#00873E']].forEach(([v,c])=>{
+  s+=`<polygon points="${v.map((x,k)=>pt(k,R*x/mx).join(',')).join(' ')}" fill="${c}" fill-opacity=".16" stroke="${c}" stroke-width="2"/>`;
+  v.forEach((x,k)=>{const[px,py]=pt(k,R*x/mx);s+=`<circle cx="${px}" cy="${py}" r="3.5" fill="${c}"><title>OE ${k+1}: ${x}</title></circle>`})});
+ $('rad').innerHTML=s}
+
+function selOE(k){S.oe=k;r1()}
+function abre(id){const i=DATA.ini.find(x=>x.id===id);if(!i.dirs.length)return;const d=DIR[i.dirs[0]];S.tema=d.tema;S.dz=d.desafio;S.dr=d.i;S.ini=id;go(3)}
+function r1(){
+ const l=F(),o=DATA.oe.find(x=>x.id===S.oe),v=l.filter(i=>i.oeV===o.id).sort((x,y)=>x.id.localeCompare(y.id));
+ const c=s=>v.filter(i=>i.sit===s).length,out=v.length-c('Em execução')-c('Em validação');
+ $('v1').innerHTML=`<div class="g5">${DATA.oe.map(x=>`<div class="oc ${x.id===S.oe?'on':''}" onclick="selOE(${x.id})"><b>Obj. Estratégico ${x.id}</b><span>${esc(x.nome)}</span></div>`).join('')}</div>
+ <div class="g3"><div class="card g"><div class="ct">O que almeja?</div><div class="sc"><p class="txt">${esc(o.almeja||'')}</p>
+ <div class="ct" style="margin:14px 0 8px">Visão de futuro</div><ul class="vis">${o.visao.map(x=>`<li><b>${esc(x.t)}:</b> ${esc(x.d)}</li>`).join('')}</ul></div></div>
+ <div class="card g"><div class="ct">Metas PNM 2050</div><div class="mt"><span>Meta 1</span><span>Meta 2</span><span>Meta 3</span></div>
+ <div class="empty">Os dados das metas do PNM 2050 (cenário desejado × valor atual) ainda não constam na planilha. Ao incluí-los, o gráfico de evolução aparece aqui.</div></div>
+ <div class="card g"><div class="ct">Iniciativas do PMA 2027 vinculadas</div><div class="sc"><ul class="il">${v.length?v.map(i=>`<li style="${i.dirs.length?'':'cursor:default'}" onclick="abre('${i.id}')" title="${esc(i.nome)}"><span class="dot" style="background:${cor(i)}"></span><span style="flex:1">${esc(i.curto||i.nome)}</span><em>${ADER[i.ader==null?3:i.ader]}</em></li>`).join(''):'<li style="cursor:default">Nenhuma iniciativa com os filtros atuais.</li>'}</ul></div>
+ <div class="tot"><div style="background:#3B1B04"><b>${v.length}</b>Total</div><div style="background:#00873E"><b>${c('Em execução')}</b>Em execução</div><div style="background:#F39C12"><b>${c('Em validação')}</b>Em validação</div><div style="background:#7A7A7A"><b>${out}</b>Estrutur./previstas</div></div></div></div>`}
+
+function r2(){
+ const l=F(),T=TEMAS.map((n,k)=>{const li=l.filter(i=>i.temas.includes(n));return{n,k,ni:li.length,nd:DATA.dirs.filter(x=>x.tema===n).length}});
+ $('v2').innerHTML=`<div class="g4"><div class="kpi"><h4>Desafios com iniciativa</h4><b>${desDe(l).length}</b> <small>de ${NDES}</small></div><div class="kpi"><h4>Temas com iniciativas</h4><b>${T.filter(t=>t.ni).length}</b> <small>de ${T.length}</small></div><div class="kpi"><h4>Iniciativas</h4><b>${l.length}</b></div><div class="kpi"><h4>Diretrizes com iniciativa</h4><b>${dirsDe(l).length}</b> <small>de ${DATA.dirs.length}</small></div></div>
+ <div class="card"><div class="ct">Temas estratégicos do PMA 2027 <small style="text-transform:none;font-weight:600;color:#777">(clique em um tema para abrir a árvore)</small></div>
+ <div class="tg">${T.map(t=>`<div class="tc ${VIS(t.n)[0]}" title="${esc(t.n)}" onclick="abreTema(${t.k})"><svg class="ti" viewBox="0 0 24 24"><path d="${VIS(t.n)[1]}"/></svg><b>${esc(t.n)}</b><span>${t.nd} diretrizes</span><span>${t.ni} iniciativa${t.ni===1?'':'s'}</span></div>`).join('')}</div></div>`}
+function abreTema(k){S.tema=TEMAS[k];S.dz=S.dr=S.ini=null;go(3)}
+const pl=(n,a,b)=>n+' '+(n===1?a:b);
+function selDz(k){const n=DESAFIOS()[k];S.dz=S.dz===n?null:n;S.dr=S.ini=null;r3()}
+function selDr(id){S.dr=S.dr===id?null:id;S.ini=null;r3()}
+function selIni(id){S.ini=S.ini===id?null:id;r3()}
+function r3(){
+ const l=F(),des=DESAFIOS(),dd=S.dz?DATA.dirs.filter(d=>d.tema===S.tema&&d.desafio===S.dz):[],li=S.dr?l.filter(i=>i.dirs.includes(S.dr)):[];
+ const i=S.ini&&l.find(x=>x.id===S.ini),m=v=>v?esc(v):'<i style="opacity:.8">Não informado</i>',hint=t=>`<div class="hint">${t}</div>`;
+ const c1=des.map((n,k)=>{const x=DATA.dirs.filter(d=>d.tema===S.tema&&d.desafio===n).length;return `<div class="nb ${n===S.dz?'sel':''}" id="n-d${k}" onclick="selDz(${k})"><span>${esc(n)}</span><em>${pl(x,'diretriz','diretrizes')}</em></div>`}).join('');
+ const c2=S.dz?dd.map(d=>{const c=l.filter(x=>x.dirs.includes(d.i)).length;return `<div class="nb w ${d.i===S.dr?'sel':''}" id="n-r${d.i}" onclick="selDr(${d.i})"><span><b>${d.i}</b> · ${esc(d.txt)}</span><em${c?'':' class="z"'}>${c?pl(c,'iniciativa','iniciativas'):'sem iniciativas no PMA 2027'}</em></div>`}).join(''):hint('Clique em um desafio para ver as diretrizes');
+ const c3=S.dr?(li.length?li.map(x=>`<div class="nb w ${x.id===S.ini?'sel':''}" id="n-i-${x.id}" style="border-left:6px solid ${cor(x)}" onclick="selIni('${x.id}')"><span>${esc(x.curto||x.nome)}</span><em>${esc(x.sit)}</em></div>`).join(''):'<div class="nb none">Sem iniciativas no PMA 2027</div>'):hint('Clique em uma diretriz para ver as iniciativas');
+ $('v3').innerHTML=`<div class="back"><button class="btn" onclick="go(2)">← Voltar ao Mapa de Temas</button><h2>${esc(S.tema)}</h2></div>
+ <div class="g2" style="grid-template-columns:1.9fr 1fr"><div class="card g"><div class="tree" id="tree"><svg id="wires"></svg>
+ <div class="tcol"><div class="th">Desafios</div>${c1}</div><div class="tcol"><div class="th">Diretrizes</div>${c2}</div><div class="tcol"><div class="th">Iniciativas</div>${c3}</div></div></div>
+ <div class="card g">${i?`<div class="dc"><div class="bx" style="font-size:12.5px">${esc(i.id)} · ${esc(i.nome)}</div>
+ <div class="bx l"><b>Breve descrição:</b> ${esc(i.desc||i.resultado)}</div>
+ <div class="row"><div class="bx">Natureza<span>${esc(i.nat)}</span></div><div class="bx">Unidade responsável<span>${esc(i.unidade)}</span></div></div>
+ <div class="bx l"><b>Resultado esperado:</b> ${esc(i.resultado)}</div>
+ <div class="row"><div class="bx l"><b>Indicadores</b><br>Base: <i>não informada</i><br>Meta 6/2027: ${m(i.mj)}<br>Meta 12/2027: ${m(i.md)}</div><div class="bx" style="background:${cor(i)};display:flex;align-items:center;justify-content:center">Status:<br>${esc(i.sit)}</div></div>
+ <div class="bx l" style="font-size:10.5px"><b>Diretriz selecionada:</b> ${esc(DIR[S.dr].txt)}${i.sit_obs||i.nat_obs?'<br><b>Observação:</b> '+esc(i.sit_obs||i.nat_obs):''}</div></div>`:'<div class="ct">Detalhes da iniciativa</div><div class="empty">Navegue pela árvore (desafio → diretriz → iniciativa) e clique em uma iniciativa para ver os detalhes.</div>'}</div></div>`;
+ requestAnimationFrame(liga)}
+function liga(){const c=$('tree'),w=$('wires');if(!c||S.tab!==3)return;const R=c.getBoundingClientRect(),P=(a,b)=>{const A=$(a),B=$(b);if(!A||!B)return'';const x=A.getBoundingClientRect(),y=B.getBoundingClientRect(),x1=x.right-R.left,y1=x.top+x.height/2-R.top,x2=y.left-R.left,y2=y.top+y.height/2-R.top,k=(x1+x2)/2;return `<path d="M${x1} ${y1}C${k} ${y1} ${k} ${y2} ${x2} ${y2}"/>`};
+ let h='';if(S.dz){const k=DESAFIOS().indexOf(S.dz);DATA.dirs.filter(d=>d.tema===S.tema&&d.desafio===S.dz).forEach(d=>h+=P('n-d'+k,'n-r'+d.i))}
+ if(S.dr)F().filter(x=>x.dirs.includes(S.dr)).forEach(x=>h+=P('n-r'+S.dr,'n-i-'+x.id));
+ w.setAttribute('width',c.scrollWidth);w.setAttribute('height',c.scrollHeight);w.innerHTML=h}
+window.addEventListener('resize',liga);
+
+opts('f-tema','Todos',TEMAS);opts('f-sit','Todas',uniq(DATA.ini.map(i=>i.sit)));
+opts('f-uni','Todas',uniq(DATA.ini.map(i=>i.unidade)));opts('f-nat','Todas',uniq(DATA.ini.map(i=>i.nat)));
+go(0);
+</script>
+</body>
+</html>
