@@ -12,7 +12,7 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 /* Header e Logo com o novo Ícone (Cabeçalho) */
 .bar{background:var(--gold);border:1px solid var(--goldd);color:#fff;border-radius:var(--r);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .logo-header{display:flex;align-items:center;gap:12px;background:#fff;padding:6px 14px;border-radius:6px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
-.logo-header img{height:45px; object-fit:contain} /* Ajustado para a imagem PNG */
+.logo-header img{height:45px; object-fit:contain}
 .logo-header div{line-height:1;color:#0F3836;font-weight:800;font-size:16px}
 .bar-center{text-align:center;flex:1}
 .bar h1{font-size:18px;letter-spacing:.5px;text-transform:uppercase;font-weight:800}
@@ -23,7 +23,7 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .home:hover{background:rgba(0,0,0,.22)}
 .home svg{width:26px;height:26px;fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 
-/* Layout 100% Livre (Filtros removidos) */
+/* Layout Livre */
 .layout{display:flex;flex-direction:column;gap:var(--g);flex:1}
 .main{display:flex;flex-direction:column;gap:var(--g);min-width:0}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);border-radius:var(--r);overflow:hidden;border:0;box-shadow:var(--sh)}
@@ -77,13 +77,13 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .kpi h4{background:var(--gold);color:#000;font-size:11px;text-transform:uppercase;padding:7px 6px;margin:0 0 10px}
 .kpi b{font-size:26px;font-weight:900;color:#000}.kpi small{font-size:12px;color:#777;font-weight:600}
 
-/* ATUALIZAÇÃO DO MAPA DE TEMAS (IMAGENS EM VEZ DE SVGS) */
+/* ATUALIZAÇÃO DO MAPA DE TEMAS (IMAGENS PNG EM VEZ DE SVGS) */
 .tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;justify-items:center;padding:8px}
 .tc{width:176px;height:176px;border-radius:50%;border:3px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease;gap:3px;box-shadow:var(--sh)}
 .tc:hover{transform:translateY(-5px);box-shadow:0 8px 12px -3px rgba(0,0,0,.15)}
 .tc b{color:#000;font-size:10.5px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .tc span{color:#333;font-size:10.5px;font-weight:600}
-.ti{width:45px;height:45px;margin-bottom:6px;flex:none;object-fit:contain} /* Atualizado para imagens PNG */
+.ti{width:45px;height:45px;margin-bottom:6px;flex:none;object-fit:contain}
 .tcv{background:#E1EBE2;border-color:#7A9F82}
 .tca{background:#FDF3E1;border-color:#D4A045}
 .tcm{background:#F0E6DD;border-color:#8E5A31}
@@ -124,8 +124,8 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 #wires{position:absolute;left:0;top:0;pointer-events:none}#wires path{fill:none;stroke:var(--brown);stroke-width:2}
 .tcol{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
 
-/* Capa Atualizada */
-#cover {position:fixed;inset:0;background:url('Capa BI PMA.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
+/* Capa Atualizada - Puxando da raiz */
+#cover {position:fixed;inset:0;background:url('capa-pma.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
 #cover button {background:#3B6350;color:#fff;border:2px solid #fff;padding:16px 48px;font-size:18px;font-weight:800;border-radius:30px;cursor:pointer;text-transform:uppercase;box-shadow:0 8px 16px rgba(0,0,0,0.3);transition:transform 0.3s, background 0.3s;letter-spacing:1px;}
 #cover button:hover {background:#C49A45;transform:translateY(-3px);}
 
@@ -142,10 +142,10 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
     <button onclick="document.getElementById('cover').style.display='none'">Entrar no Painel</button>
 </div>
 
-<!-- CABEÇALHO COM A LOGO EM IMAGEM PELA URL EXATA -->
+<!-- CABEÇALHO COM A LOGO EM IMAGEM (Usando o Cabeçalho.png) -->
 <header class="bar">
     <div class="logo-header">
-        <img src="Rodapé (1).png" alt="PMA 2027 Logo">
+        <img src="Cabeçalho.png" alt="PMA 2027 Logo">
         <div>PMA <span style="font-weight:400;">2027</span></div>
     </div>
     <div class="bar-center">
@@ -179,7 +179,7 @@ const COR={'Em execução':'#00873E','Em validação':'#F39C12','Em fase de estr
 const TIT=['PLANO DE METAS','OBJETIVOS ESTRATÉGICOS','MAPA DE TEMAS'];
 const SUB={PILARES:'Pilares são os grandes eixos estruturantes que sustentam o PNM 2050.',OBJ:'Objetivos Estratégicos orientam a formulação das políticas públicas de longo prazo do setor mineral.',DESAFIOS:'Desafios são os entraves críticos de natureza regulatória, tecnológica e socioambiental que precisam ser superados para o alcance do cenário desejado.',DIRETRIZES:'Diretrizes balizam a execução das ações governamentais pactuadas para superar cada desafio.'};
 
-/* OBJETOS MAPEANDO EXATAMENTE OS ARQUIVOS QUE VOCÊ ANEXOU */
+/* MAPEAMENTO DOS ARQUIVOS PNG (Sem pastas, apontando direto pra raiz) */
 const IC={
   planta: 'Responsabilidade Socioambiental.png',
   eng: 'Pesquisa mineral.png',
@@ -270,7 +270,7 @@ function r1(){
  <div class="card g"><div class="ct">Iniciativas do PMA 2027 vinculadas</div><div class="sc"><ul class="il">${v.length?v.map(i=>`<li style="${i.dirs.length?'':'cursor:default'}" onclick="abre('${i.id}')" title="${esc(i.nome)}"><span class="dot" style="background:${cor(i)}"></span><span style="flex:1">${esc(i.curto||i.nome)}</span><em>${ADER[i.ader==null?3:i.ader]}</em></li>`).join(''):'<li style="cursor:default">Nenhuma iniciativa com os filtros atuais.</li>'}</ul></div>
  <div class="tot"><div style="background:#3B1B04"><b>${v.length}</b>Total</div><div style="background:#00873E"><b>${c('Em execução')}</b>Em execução</div><div style="background:#F39C12"><b>${c('Em validação')}</b>Em validação</div><div style="background:#7A7A7A"><b>${out}</b>Estrutur./previstas</div></div></div></div>`}
 
-/* ATUALIZAÇÃO DA CHAMADA DA IMAGEM: A tag SVG virou IMG */
+/* MAPA DE TEMAS (Trocado para tag <img>) */
 function r2(){
  const l=F(),T=TEMAS.map((n,k)=>{const li=l.filter(i=>i.temas.includes(n));return{n,k,ni:li.length,nd:DATA.dirs.filter(x=>x.tema===n).length}});
  $('v2').innerHTML=`<div class="g4"><div class="kpi"><h4>Desafios com iniciativa</h4><b>${desDe(l).length}</b> <small>de ${NDES}</small></div><div class="kpi"><h4>Temas com iniciativas</h4><b>${T.filter(t=>t.ni).length}</b> <small>de ${T.length}</small></div><div class="kpi"><h4>Iniciativas</h4><b>${l.length}</b></div><div class="kpi"><h4>Diretrizes com iniciativa</h4><b>${dirsDe(l).length}</b> <small>de ${DATA.dirs.length}</small></div></div>
