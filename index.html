@@ -192,7 +192,8 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .tcol{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
 
 /* Capa Ajustada */
-#cover {position:fixed;inset:0;background:url('capa-pma.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
+#cover {position:fixed;inset:0;background:url('capa-pma.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%; transition: opacity 0.6s ease, visibility 0.6s ease;}
+#cover.hide {opacity: 0; visibility: hidden; pointer-events: none;}
 #cover button {background:var(--green);color:#fff;border:2px solid #fff;padding:16px 48px;font-size:18px;font-weight:800;border-radius:30px;cursor:pointer;text-transform:uppercase;box-shadow:0 8px 16px rgba(0,0,0,0.3);transition:transform 0.3s, background 0.3s;letter-spacing:1px;}
 #cover button:hover {background:var(--gold);transform:translateY(-3px);}
 
@@ -204,7 +205,7 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 
 <!-- CAPA PMA 2027 -->
 <div id="cover">
-    <button onclick="document.getElementById('cover').style.display='none'">Entrar no Painel</button>
+    <button onclick="document.getElementById('cover').classList.add('hide')">Entrar no Painel</button>
 </div>
 
 <!-- CABEÇALHO LIMPO -->
@@ -216,7 +217,7 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
         <h1 id="ttl"></h1>
         <small>IMPLEMENTANDO O PLANO NACIONAL DE MINERAÇÃO 2050</small>
     </div>
-    <button class="home" onclick="document.getElementById('cover').style.display='flex'" title="Voltar para a Capa">
+    <button class="home" onclick="document.getElementById('cover').classList.remove('hide')" title="Voltar para a Capa">
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     </button>
 </header>
