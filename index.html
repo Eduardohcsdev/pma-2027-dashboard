@@ -99,19 +99,61 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .kpi h4{background:var(--gold);color:#fff;font-size:11px;text-transform:uppercase;padding:7px 6px;margin:0 0 10px}
 .kpi b{font-size:26px;font-weight:900;color:#000}.kpi small{font-size:12px;color:#777;font-weight:600}
 
-/* MAPA DE TEMAS (Imagens PNG) */
-.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;justify-items:center;padding:8px}
-.tc{width:176px;height:176px;border-radius:50%;border:3px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease;gap:3px;box-shadow:var(--sh)}
-.tc:hover{transform:translateY(-5px);box-shadow:0 8px 12px -3px rgba(0,0,0,.15)}
+/* MAPA DE TEMAS (Bolhas Orgânicas Desordenadas e Fixas) */
+.tg {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    padding: 40px 10px;
+}
+.tc {
+    width: 154px;
+    height: 154px;
+    border-radius: 50%;
+    border: 3px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px;
+    cursor: pointer;
+    transition: box-shadow 0.4s ease; /* Removido o transform para não pular */
+    gap: 3px;
+    box-shadow: var(--sh);
+    position: relative;
+}
+
+/* Espalhamento orgânico individual para simular bolhas */
+.tc:nth-child(1) { margin-top: -30px; margin-left: 10px; }
+.tc:nth-child(2) { margin-top: 40px; margin-right: 15px; }
+.tc:nth-child(3) { margin-top: -10px; margin-left: -5px; }
+.tc:nth-child(4) { margin-top: 50px; margin-left: 20px; }
+.tc:nth-child(5) { margin-top: -40px; }
+.tc:nth-child(6) { margin-top: 25px; margin-right: 20px; }
+.tc:nth-child(7) { margin-top: -20px; margin-left: 15px; }
+.tc:nth-child(8) { margin-top: 35px; }
+.tc:nth-child(9) { margin-top: -15px; }
+
+.tc:hover {
+    box-shadow: 0 12px 20px -5px rgba(0,0,0,0.25);
+    z-index: 10;
+}
+
 .tc b{color:#000;font-size:10.5px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .tc span{color:#333;font-size:10.5px;font-weight:600}
 .ti{width:45px;height:45px;margin-bottom:6px;flex:none;object-fit:contain}
+
+/* Cores das Bolhas */
 .tcv{background:#E1EBE2;border-color:#7A9F82}
 .tca{background:#FDF3E1;border-color:#D4A045}
 .tcm{background:#F0E6DD;border-color:#8E5A31}
 .tct{background:#DCE7E9;border-color:#4A7A82}
 .tco{background:#FDF3E1;border-color:#C87A31}
-.tc.nd{background:#F4F4F4;border:2px dashed #BBB;color:#999;cursor:default}.tc.nd:hover{transform:none}
+.tcb{background:#dce7e8;border-color:var(--green)} /* Nova cor "Azul/Verde Escuro" da Paleta */
+.tc.nd{background:#F4F4F4;border:2px dashed #BBB;color:#999;cursor:default;margin-top:0 !important;transform:none !important}
 
 .back{display:flex;align-items:center;gap:12px}
 .btn{background:var(--brown);color:#fff;border:0;padding:8px 14px;font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;text-transform:uppercase;transition:.2s}
@@ -142,19 +184,19 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .dc .row .bx.l{background:var(--bg);border:0;color:#222;font-weight:600}
 .dc .bx[style*="background"]{color:#fff;border:0;border-radius:20px;font-weight:800}
 
-/* Rodapé Ajustado (com a imagem do rodapé.png) */
+/* Rodapé Ajustado */
 .ft{background:var(--gold);border:0;border-radius:6px;color:#fff;font-size:11px;font-weight:700;padding:14px 14px;text-align:center}
 
 .tree{position:relative;display:grid;grid-template-columns:repeat(3,1fr);column-gap:46px;align-items:start}
 #wires{position:absolute;left:0;top:0;pointer-events:none}#wires path{fill:none;stroke:var(--brown);stroke-width:2}
 .tcol{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
 
-/* Capa: Apontando para o nome exato capa.jpg */
-#cover {position:fixed;inset:0;background:url('capa.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
+/* Capa Ajustada */
+#cover {position:fixed;inset:0;background:url('capa-pma.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
 #cover button {background:var(--green);color:#fff;border:2px solid #fff;padding:16px 48px;font-size:18px;font-weight:800;border-radius:30px;cursor:pointer;text-transform:uppercase;box-shadow:0 8px 16px rgba(0,0,0,0.3);transition:transform 0.3s, background 0.3s;letter-spacing:1px;}
 #cover button:hover {background:var(--gold);transform:translateY(-3px);}
 
-@media(max-width:1100px){.layout,.g2,.g3-custom,.tl{grid-template-columns:1fr}.g5,.g4{grid-template-columns:repeat(2,1fr)}.tg{grid-template-columns:repeat(2,1fr)}#v1 .g3-custom{height:auto} #v1 .g3-custom > div {height: auto; max-height: 520px;}}
+@media(max-width:1100px){.layout,.g2,.g3-custom,.tl{grid-template-columns:1fr}.g5,.g4{grid-template-columns:repeat(2,1fr)}.tg{grid-template-columns:repeat(2,1fr); padding: 20px 10px;} .tc:nth-child(n) {margin-top:0; margin-left:0; margin-right:0;} #v1 .g3-custom{height:auto} #v1 .g3-custom > div {height: auto; max-height: 520px;}}
 </style>
 <script>window.addEventListener('error',function(e){var m=(e.message||'').replace('Uncaught ','');if(/DATA is not defined/.test(m)){document.body.innerHTML='<div style="font:16px \'Segoe UI\',sans-serif;padding:40px;max-width:640px;margin:auto"><h2>Este arquivo é apenas o modelo</h2><p style="margin-top:10px">Ele não contém os dados. Abra o <b>dashboard_pma_2027.html</b> (ou gere um novo com <code>python gerar_dashboard.py planilha.xlsx template_dashboard.html saida.html</code>).</p></div>'}else{var d=document.createElement('div');d.style.cssText='background:#FFF3F3;border:2px solid #D9534F;color:#8A1F1B;padding:12px 16px;margin:10px 0;border-radius:8px;font:13px \'Segoe UI\',sans-serif';d.textContent='Erro no painel: '+m;document.body.insertBefore(d,document.body.firstChild)}})</script>
 </head>
@@ -165,7 +207,7 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
     <button onclick="document.getElementById('cover').style.display='none'">Entrar no Painel</button>
 </div>
 
-<!-- CABEÇALHO LIMPO COM cabecalho.png -->
+<!-- CABEÇALHO LIMPO -->
 <header class="bar">
     <div class="logo-header">
         <img src="cabecalho.png" alt="PMA 2027 Logo">
@@ -198,11 +240,12 @@ const DATA={"oe": [{"id": 1, "nome": "Consolidar a Mineração Brasileira como S
 if (typeof DATA === 'undefined') {
   window.DATA = {
     ini: [
-      {id: 'EX-01', nome: 'Iniciativa Modelo para Visualização', curto: 'Iniciativa Modelo', desc: 'Esta é uma iniciativa de exemplo para preencher o painel durante a edição do layout.', resultado: 'Resultados visuais demonstrativos.', unidade: 'DPPM', nat: 'Projeto', sit: 'Em execução', temas: ['Pesquisa Mineral', 'Socioambiental'], dirs: [1], oeV: 1, ader: 2, mj: '100%', md: '100%'}
+      {id: 'EX-01', nome: 'Iniciativa Modelo para Visualização', curto: 'Iniciativa Modelo', desc: 'Esta é uma iniciativa de exemplo para preencher o painel durante a edição do layout.', resultado: 'Resultados visuais demonstrativos.', unidade: 'DPPM', nat: 'Projeto', sit: 'Em execução', temas: ['Pesquisa Mineral', 'Socioambiental', 'Ambiente Regulatório e Oportunidades de Mercado'], dirs: [1], oeV: 1, ader: 2, mj: '100%', md: '100%'}
     ],
     dirs: [
       {i: 1, tema: 'Pesquisa Mineral', desafio: 'Ampliar o conhecimento geológico', txt: 'Fomentar a pesquisa mineral no território nacional.'},
-      {i: 2, tema: 'Socioambiental', desafio: 'Garantir a sustentabilidade', txt: 'Promover práticas sustentáveis.'}
+      {i: 2, tema: 'Socioambiental', desafio: 'Garantir a sustentabilidade', txt: 'Promover práticas sustentáveis.'},
+      {i: 3, tema: 'Ambiente Regulatório e Oportunidades de Mercado', desafio: 'Modernizar as normas', txt: 'Aprimorar o ambiente regulatório.'}
     ],
     oe: [
       {id: 1, nome: 'Sustentável e Inclusiva', almeja: 'Consolidar a mineração brasileira como sustentável e inclusiva.', visao: [{t: 'Desenvolvimento local', d: 'Impactos positivos duradouros.'}]},
@@ -219,10 +262,11 @@ const CFG={
  oeCurto:['Sustentável e Inclusiva','Conhecimento Geológico','Agregação de Valor','Governança e Integridade','Soberania e Suprimento'],
  intro:'O Plano de Metas e Ações é o instrumento tático que operacionaliza as diretrizes do Plano Nacional de Mineração 2050, estruturando entregas concretas e monitorando o avanço das instituições nos eixos estratégicos do setor mineral brasileiro.'};
 
-/* CORES ORIGINAIS DE STATUS RESTAURADAS */
 const COR={'Em execução':'#00873E','Em validação':'#F39C12','Em fase de estruturação/planejamento':'#A0662A','Prevista para iniciar em 2027':'#7A7A7A'};
 const TIT=['PLANO DE METAS','OBJETIVOS ESTRATÉGICOS','MAPA DE TEMAS'];
-/* MAPA DOS ARQUIVOS PNG RESTAURADO E ATUALIZADO */
+const SUB={PILARES:'Pilares são os grandes eixos estruturantes que sustentam o PNM 2050.',OBJ:'Objetivos Estratégicos orientam a formulação das políticas públicas de longo prazo do setor mineral.',DESAFIOS:'Desafios são os entraves críticos de natureza regulatória, tecnológica e socioambiental que precisam ser superados para o alcance do cenário desejado.',DIRETRIZES:'Diretrizes balizam a execução das ações governamentais pactuadas para superar cada desafio.'};
+
+/* MAPA DOS ARQUIVOS PNG COM O NOVO AMBIENTE REGULATÓRIO */
 const IC={
   planta: 'socioambiental.png',
   eng: 'pesquisa-mineral.png',
@@ -235,6 +279,7 @@ const IC={
   luz: 'ambienteRegulatorio.png'
 };
 
+/* ADICIONADO REGULATÓRIO VINCULADO AO TCB (AZUL/VERDE ESCURO) E ICONE LUZ */
 const VISU=[
   [/Socioambiental/, 'tcv', 'planta'],
   [/Pesquisa Mineral/, 'tca', 'eng'],
@@ -294,17 +339,17 @@ function r0(){
  </div></div></div>`;
  radar()}
  
-/* GRÁFICO DE ARANHA ESTÁTICO COM SEUS DADOS EXATOS */
+/* GRÁFICO DE ARANHA ESTÁTICO COM OS DADOS EXATOS DA PLANILHA */
 function radar(){
  const n=5,cx=260,cy=180,R=112,ang=k=>-Math.PI/2+2*Math.PI*k/n,pt=(k,r)=>[cx+r*Math.cos(ang(k)),cy+r*Math.sin(ang(k))];
- const mx=100; /* Normalizando até 100 para o radar */
+ const mx=100;
  const lbls = ['Sustentável e Inclusiva', 'Conhecimento Geológico', 'Agregação de Valor', 'Governança e Integridade', 'Soberania e Suprimento'];
  const series = [
    { c: '#7A7A7A', v: [80, 59, 34, 97, 57], n: 'PNM 2050' },
-   { c: '#ce8f33', v: [39.8, 42.8, 21.6, 54.3, 34.5], n: 'Geral' },
-   { c: '#6a8c6b', v: [9.2, 3.2, 1.23, 12.97, 1.27], n: 'ANM' },
+   { c: '#ce8f33', v: [39.80, 42.80, 21.60, 54.30, 34.50], n: 'Geral' },
+   { c: '#6a8c6b', v: [9.20, 3.20, 1.23, 12.97, 1.27], n: 'ANM' },
    { c: '#632704', v: [19.87, 12.61, 13.06, 23.83, 18.59], n: 'MME' },
-   { c: '#0f4147', v: [10.75, 27, 7.32, 17.53, 14.63], n: 'SGB' }
+   { c: '#0f4147', v: [10.75, 27.00, 7.32, 17.53, 14.63], n: 'SGB' }
  ];
  let s='';
  for(let g=1;g<=4;g++){s+=`<polygon points="${[0,1,2,3,4].map(k=>pt(k,R*g/4).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="${cx+4}" y="${cy-R*g/4+3}" font-size="8" fill="#999">${Math.round(mx*g/4)}</text>`}
@@ -317,7 +362,6 @@ function radar(){
 
 function selOE(k){S.oe=k;r1()}
 
-/* ABA 1 COM A ESTRUTURA DE COLUNAS PERFEITAMENTE ALINHADA NA ALTURA E CORES ORIGINAIS RESTAURADAS */
 function r1(){
  const l=F(),o=DATA.oe.find(x=>x.id===S.oe),v=l.filter(i=>i.oeV===o.id).sort((x,y)=>x.id.localeCompare(y.id));
  const c=s=>v.filter(i=>i.sit===s).length,out=v.length-c('Em execução')-c('Em validação');
@@ -340,7 +384,7 @@ function r1(){
     <div class="tot"><div style="background:#3B1B04"><b>${v.length}</b>Total</div><div style="background:#00873E"><b>${c('Em execução')}</b>Em execução</div><div style="background:#F39C12"><b>${c('Em validação')}</b>Em validação</div><div style="background:#7A7A7A"><b>${out}</b>Estrutur./previstas</div></div></div>
  </div>`}
 
-/* MAPA DE TEMAS COM IMAGENS PNG */
+/* MAPA DE TEMAS COM BOLHAS ORGÂNICAS E NOVO ÍCONE AZUL/VERDE ESCURO */
 function r2(){
  const l=F(),T=TEMAS.map((n,k)=>{const li=l.filter(i=>i.temas.includes(n));return{n,k,ni:li.length,nd:DATA.dirs.filter(x=>x.tema===n).length}});
  $('v2').innerHTML=`<div class="g4"><div class="kpi"><h4>Desafios com iniciativa</h4><b>${desDe(l).length}</b> <small>de ${NDES}</small></div><div class="kpi"><h4>Temas com iniciativas</h4><b>${T.filter(t=>t.ni).length}</b> <small>de ${T.length}</small></div><div class="kpi"><h4>Iniciativas</h4><b>${l.length}</b></div><div class="kpi"><h4>Diretrizes com iniciativa</h4><b>${dirsDe(l).length}</b> <small>de ${DATA.dirs.length}</small></div></div>
