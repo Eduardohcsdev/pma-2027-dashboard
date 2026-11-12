@@ -5,22 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plano de Metas e Ações (PMA) 2027 - Painel de Monitoramento</title>
 <style>
-:root{--gold:#C89D52;--goldd:#B0853B;--brown:#A0662A;--brownd:#5C2300;--green:#00873E;--greend:#006F32;--amber:#F39C12;--bg:#EFECE6;--r:8px;--g:14px}
+/* Paleta de Cores Atualizada */
+:root{
+  --gold:#ce8f33; 
+  --goldd:#B07D2C;
+  --brown:#632704;
+  --brownd:#4A1D03;
+  --green:#0f4147;
+  --sage:#6a8c6b;
+  --bg:#EFECE6;
+  --bd:#D3C4B1;
+  --r:8px;
+  --g:14px;
+  --sh:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
+}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
 body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:flex;flex-direction:column;gap:var(--g);max-width:1500px;margin:0 auto}
 
-/* Header e Logo com o novo Ícone (Cabeçalho) */
+/* Header e Logo Limpos */
 .bar{background:var(--gold);border:1px solid var(--goldd);color:#fff;border-radius:var(--r);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.logo-header{display:flex;align-items:center;gap:12px;background:#fff;padding:6px 14px;border-radius:6px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
-.logo-header img{height:45px; object-fit:contain}
-.logo-header div{line-height:1;color:#0F3836;font-weight:800;font-size:16px}
+.logo-header{display:flex;align-items:center;gap:12px;padding:0} /* Fundo branco e bordas removidos */
+.logo-header img{height:50px; object-fit:contain}
 .bar-center{text-align:center;flex:1}
 .bar h1{font-size:18px;letter-spacing:.5px;text-transform:uppercase;font-weight:800}
-.bar small{display:block;font-size:11px;margin-top:3px;letter-spacing:.5px;opacity:.95;font-weight:600;color:#3B2A12}
+.bar small{display:block;font-size:11px;margin-top:3px;letter-spacing:.5px;opacity:.95;font-weight:600;color:#fff} /* Ajustado contraste */
 
 /* Botão Home */
-.home{background:rgba(0,0,0,.1);border-radius:6px;padding:6px;border:0;cursor:pointer;transition:.2s}
-.home:hover{background:rgba(0,0,0,.22)}
+.home{background:rgba(0,0,0,.15);border-radius:6px;padding:6px;border:0;cursor:pointer;transition:.2s}
+.home:hover{background:rgba(0,0,0,.3)}
 .home svg{width:26px;height:26px;fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 
 /* Layout Livre */
@@ -28,8 +40,8 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .main{display:flex;flex-direction:column;gap:var(--g);min-width:0}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);border-radius:var(--r);overflow:hidden;border:0;box-shadow:var(--sh)}
 .tab{background:var(--brown);color:#fff;border:1px solid var(--bd);border-right:0;padding:11px;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:.2s}
-.tab:last-child{border-right:1px solid var(--bd)}.tab.on{background:var(--gold);color:#000;border-color:var(--gold)}
-.tab:hover:not(.on){background:var(--bl)}
+.tab:last-child{border-right:1px solid var(--bd)}.tab.on{background:var(--gold);color:#fff;border-color:var(--gold)}
+.tab:hover:not(.on){background:#7d3305}
 .view{display:none;flex-direction:column;gap:var(--g);flex:1}.view.on{display:flex;animation:fade .35s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
@@ -39,16 +51,19 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .ct{font-size:13.5px;font-weight:800;text-align:center;text-transform:uppercase;color:#000}
 .txt{font-size:12.5px;line-height:1.5;color:#333;text-align:justify}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:var(--g);align-items:stretch}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--g);align-items:stretch}
+
+/* Ajuste das proporções para as metas ganharem mais espaço */
+.g3-custom{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:var(--g);align-items:stretch}
+
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--g)}
 .g5{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--g)}
 .sub{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.sb{background:var(--bl);color:#fff;border:0;padding:9px 4px;font-size:11px;font-weight:700;border-radius:4px;cursor:pointer;text-transform:uppercase;transition:.2s}
-.sb:hover,.sb.on{background:var(--brown)}
+.sb{background:var(--sage);color:#fff;border:0;padding:9px 4px;font-size:11px;font-weight:700;border-radius:4px;cursor:pointer;text-transform:uppercase;transition:.2s}
+.sb:hover,.sb.on{background:var(--green)}
 .mcs{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:8px;flex:1}
 .mc{padding:10px;border-radius:6px;text-align:center;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;text-transform:uppercase;line-height:1.3;min-height:56px;transition:transform .2s}
 .mc:hover{transform:translateY(-2px)}
-.tan{background:var(--gold);color:#000;border:0}.dk{background:var(--bg);color:#000;border:1px solid var(--gold)}
+.tan{background:var(--gold);color:#fff;border:0}.dk{background:var(--bg);color:#000;border:1px solid var(--gold)}
 .mc.big{font-size:15px}
 .rad{width:100%;max-width:560px;height:auto;margin:0 auto}
 .leg{display:flex;justify-content:center;gap:18px;font-size:11px;flex-wrap:wrap}
@@ -57,7 +72,9 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .oc b{font-size:11.5px;color:#fff;text-transform:uppercase}
 .oc span{font-size:11px;font-weight:600;line-height:1.25;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .oc:hover,.oc.on{background:var(--green);border-color:var(--green);transform:translateY(-2px)}
-#v1 .g3>.card{height:540px}
+#v1 .g3-custom>.col-left{display:flex;flex-direction:column;gap:var(--g)} /* Nova coluna da esquerda subdividida */
+#v1 .g3-custom>.card{height:540px}
+#v1 .g3-custom>.col-left>.card{flex:1;height:auto} /* Ajuste de altura para os dois cards da esquerda */
 .sc{overflow:auto;flex:1;padding-right:4px}
 .vis{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:12px;line-height:1.4;color:#333}
 .vis li{padding-left:10px;border-left:3px solid var(--green)}.vis b{color:var(--brown)}
@@ -74,21 +91,21 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .tot div b{display:block;font-size:17px}
 .kpi{background:#fff;border:2px solid var(--gold);border-radius:6px;box-shadow:var(--sh);text-align:center;padding:0 0 12px;overflow:hidden;transition:.25s}
 .kpi:hover{transform:translateY(-3px)}
-.kpi h4{background:var(--gold);color:#000;font-size:11px;text-transform:uppercase;padding:7px 6px;margin:0 0 10px}
+.kpi h4{background:var(--gold);color:#fff;font-size:11px;text-transform:uppercase;padding:7px 6px;margin:0 0 10px}
 .kpi b{font-size:26px;font-weight:900;color:#000}.kpi small{font-size:12px;color:#777;font-weight:600}
 
-/* ATUALIZAÇÃO DO MAPA DE TEMAS (IMAGENS PNG EM VEZ DE SVGS) */
+/* MAPA DE TEMAS (IMAGENS PNG) */
 .tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;justify-items:center;padding:8px}
 .tc{width:176px;height:176px;border-radius:50%;border:3px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease;gap:3px;box-shadow:var(--sh)}
 .tc:hover{transform:translateY(-5px);box-shadow:0 8px 12px -3px rgba(0,0,0,.15)}
 .tc b{color:#000;font-size:10.5px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .tc span{color:#333;font-size:10.5px;font-weight:600}
 .ti{width:45px;height:45px;margin-bottom:6px;flex:none;object-fit:contain}
-.tcv{background:#E1EBE2;border-color:#7A9F82}
-.tca{background:#FDF3E1;border-color:#D4A045}
-.tcm{background:#F0E6DD;border-color:#8E5A31}
-.tct{background:#DCE7E9;border-color:#4A7A82}
-.tco{background:#FDF3E1;border-color:#C87A31}
+.tcv{background:#E1EBE2;border-color:var(--sage)}
+.tca{background:#FDF3E1;border-color:var(--gold)}
+.tcm{background:#F0E6DD;border-color:var(--brown)}
+.tct{background:#DCE7E9;border-color:var(--green)}
+.tco{background:#FDF3E1;border-color:var(--goldd)}
 .tc.nd{background:#F4F4F4;border:2px dashed #BBB;color:#999;cursor:default}.tc.nd:hover{transform:none}
 
 .back{display:flex;align-items:center;gap:12px}
@@ -101,11 +118,11 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .nb:hover{transform:translateY(-1px);box-shadow:var(--sh)}
 .nb em{font-style:normal;font-size:10px;font-weight:600;opacity:.85}
 .nb.w{align-items:flex-start;text-align:left}.nb.w b{color:var(--brown)}
-.nb[id^="n-d"].sel{background:var(--brownd);box-shadow:0 0 0 3px rgba(216,165,91,.55)}
+.nb[id^="n-d"].sel{background:var(--brownd);box-shadow:0 0 0 3px rgba(99,39,4,.55)}
 .nb[id^="n-r"]{background:#F0E6DD;color:#222;border:1px solid var(--bd);border-left:4px solid var(--brown);font-weight:600}
-.nb[id^="n-r"].sel{background:#E8D6C3;box-shadow:0 0 0 3px rgba(216,165,91,.55)}
+.nb[id^="n-r"].sel{background:#E8D6C3;box-shadow:0 0 0 3px rgba(99,39,4,.55)}
 .nb[id^="n-i-"]{background:#fff;color:#222;border:2px solid var(--gold);font-weight:600}
-.nb[id^="n-i-"]:hover{background:var(--gold)}.nb[id^="n-i-"].sel{background:#FDF3E1;box-shadow:0 0 0 3px rgba(216,165,91,.55)}
+.nb[id^="n-i-"]:hover{background:var(--gold)}.nb[id^="n-i-"].sel{background:#FDF3E1;box-shadow:0 0 0 3px rgba(206,143,51,.55)}
 .nb em.z{color:#D9534F;opacity:1}
 .nb.none{background:#FFF3F3;border:1px solid #D9534F;color:#D9534F;cursor:default}
 .hint{border:2px dashed var(--bd);border-radius:6px;padding:14px;font-size:11px;color:#888;text-align:center;line-height:1.4;background:#FBF8F2}
@@ -119,19 +136,20 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .dc .row .bx span{display:block;font-size:11.5px;text-transform:none;margin-top:3px;color:#222;font-weight:600}
 .dc .row .bx.l{background:var(--bg);border:0;color:#222;font-weight:600}
 .dc .bx[style*="background"]{color:#fff;border:0;border-radius:20px;font-weight:800}
-.ft{background:var(--gold);border:0;border-radius:6px;color:#000;font-size:11px;font-weight:700;padding:8px 14px;text-align:center}
+
+/* Rodapé Ajustado */
+.ft{background:var(--gold);border:0;border-radius:6px;color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:center} /* Padding ajustado para bater com os botões */
+
 .tree{position:relative;display:grid;grid-template-columns:repeat(3,1fr);column-gap:46px;align-items:start}
 #wires{position:absolute;left:0;top:0;pointer-events:none}#wires path{fill:none;stroke:var(--brown);stroke-width:2}
 .tcol{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
 
-/* Capa Atualizada - Puxando da raiz */
-#cover {position:fixed;inset:0;background:url('capa-pma.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
-#cover button {background:#3B6350;color:#fff;border:2px solid #fff;padding:16px 48px;font-size:18px;font-weight:800;border-radius:30px;cursor:pointer;text-transform:uppercase;box-shadow:0 8px 16px rgba(0,0,0,0.3);transition:transform 0.3s, background 0.3s;letter-spacing:1px;}
-#cover button:hover {background:#C49A45;transform:translateY(-3px);}
+/* Capa */
+#cover {position:fixed;inset:0;background:url('capa.jpg') center/cover no-repeat;z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8%;}
+#cover button {background:var(--green);color:#fff;border:2px solid #fff;padding:16px 48px;font-size:18px;font-weight:800;border-radius:30px;cursor:pointer;text-transform:uppercase;box-shadow:0 8px 16px rgba(0,0,0,0.3);transition:transform 0.3s, background 0.3s;letter-spacing:1px;}
+#cover button:hover {background:var(--gold);transform:translateY(-3px);}
 
-/* Variáveis Temáticas Base */
-:root{--gold:#D8A55B;--goldd:#C4923F;--brown:#8E5A31;--brownd:#6E4424;--bl:#C29668;--bd:#D3C4B1;--bg:#EBE5D9;--green:#7A9F82;--sage:#92B095;--sh:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06)}
-@media(max-width:1100px){.layout,.g2,.g3,.tl{grid-template-columns:1fr}.g5,.g4{grid-template-columns:repeat(2,1fr)}.tg{grid-template-columns:repeat(2,1fr)}#v1 .g3>.card{height:auto;max-height:520px}}
+@media(max-width:1100px){.layout,.g2,.g3-custom,.tl{grid-template-columns:1fr}.g5,.g4{grid-template-columns:repeat(2,1fr)}.tg{grid-template-columns:repeat(2,1fr)}#v1 .g3-custom>.card, #v1 .g3-custom>.col-left>.card{height:auto;max-height:520px}}
 </style>
 <script>window.addEventListener('error',function(e){var m=(e.message||'').replace('Uncaught ','');if(/DATA is not defined/.test(m)){document.body.innerHTML='<div style="font:16px \'Segoe UI\',sans-serif;padding:40px;max-width:640px;margin:auto"><h2>Este arquivo é apenas o modelo</h2><p style="margin-top:10px">Ele não contém os dados. Abra o <b>dashboard_pma_2027.html</b> (ou gere um novo com <code>python gerar_dashboard.py planilha.xlsx template_dashboard.html saida.html</code>).</p></div>'}else{var d=document.createElement('div');d.style.cssText='background:#FFF3F3;border:2px solid #D9534F;color:#8A1F1B;padding:12px 16px;margin:10px 0;border-radius:8px;font:13px \'Segoe UI\',sans-serif';d.textContent='Erro no painel: '+m;document.body.insertBefore(d,document.body.firstChild)}})</script>
 </head>
@@ -142,11 +160,10 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
     <button onclick="document.getElementById('cover').style.display='none'">Entrar no Painel</button>
 </div>
 
-<!-- CABEÇALHO COM A LOGO EM IMAGEM (Usando o Cabeçalho.png) -->
+<!-- CABEÇALHO LIMPO -->
 <header class="bar">
     <div class="logo-header">
-        <img src="cabecalho.png" alt="PMA 2027 Logo">
-        <div>PMA <span style="font-weight:400;">2027</span></div>
+        <img src="rodape.png" alt="PMA 2027 Logo">
     </div>
     <div class="bar-center">
         <h1 id="ttl"></h1>
@@ -175,11 +192,11 @@ if(!DATA.ini||!DATA.ini.length||!DATA.ini[0].temas)throw new Error('os dados est
 const CFG={
  oeCurto:['Sustentável e Inclusiva','Conhecimento Geológico','Agregação de Valor','Governança e Integridade','Soberania e Suprimento'],
  intro:'O Plano de Metas e Ações é o instrumento tático que operacionaliza as diretrizes do Plano Nacional de Mineração 2050, estruturando entregas concretas e monitorando o avanço das instituições nos eixos estratégicos do setor mineral brasileiro.'};
-const COR={'Em execução':'#00873E','Em validação':'#F39C12','Em fase de estruturação/planejamento':'#A0662A','Prevista para iniciar em 2027':'#7A7A7A'};
+const COR={'Em execução':'var(--green)','Em validação':'var(--gold)','Em fase de estruturação/planejamento':'var(--sage)','Prevista para iniciar em 2027':'#7A7A7A'};
 const TIT=['PLANO DE METAS','OBJETIVOS ESTRATÉGICOS','MAPA DE TEMAS'];
 const SUB={PILARES:'Pilares são os grandes eixos estruturantes que sustentam o PNM 2050.',OBJ:'Objetivos Estratégicos orientam a formulação das políticas públicas de longo prazo do setor mineral.',DESAFIOS:'Desafios são os entraves críticos de natureza regulatória, tecnológica e socioambiental que precisam ser superados para o alcance do cenário desejado.',DIRETRIZES:'Diretrizes balizam a execução das ações governamentais pactuadas para superar cada desafio.'};
 
-/* MAPEAMENTO DOS ARQUIVOS PNG (Sem pastas, apontando direto pra raiz) */
+/* MAPEAMENTO DOS ARQUIVOS PNG */
 const IC={
   planta: 'socioambiental.png',
   eng: 'pesquisa-mineral.png',
@@ -202,16 +219,13 @@ const VISU=[
   [/Imagem/, 'tcm', 'chat']
 ];
 
-/* Caso algum tema fuja dessas regras, cai no padrão "Engrenagem" (Pesquisa mineral.png) */
 const VIS=n=>{const v=VISU.find(x=>x[0].test(n))||[0,'tcm','eng'];return[v[1],IC[v[2]]]};
 
-/* Estado sem variáveis de filtro */
 const S={tab:0,sub:'DESAFIOS',oe:1,tema:null,dz:null,dr:null,ini:null};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const uniq=a=>[...new Set(a)];
 
-/* O filtro foi removido da lógica. Agora ele apenas retorna todos os dados baseados na planilha (DATA.ini) */
 const F=()=>DATA.ini; 
 
 const dirsDe=l=>uniq(l.flatMap(i=>i.dirs));
@@ -243,7 +257,7 @@ function r0(){
  <div class="mc dk big">${v.pnm==null?'Dado não disponível':v.pnm+' '+v.n}</div><div class="mc tan big">${l.length} Iniciativas</div>
  <div class="mc tan">${v.pnm==null?'Pilares não constam na base':'a serem superados até 2050'}</div><div class="mc dk">${v.pnm==null?'—':'associadas a '+v.pma+' '+v.n+' ('+pct(v.pma,v.pnm)+'%)'}</div></div></div>
  <div class="card"><div class="ct">Objetivos PNM 2050 x Iniciativas PMA 2027</div><svg class="rad" id="rad" viewBox="0 0 520 370"></svg>
- <div class="leg"><span><i style="background:#A0662A"></i>Iniciativas vinculadas</span><span><i style="background:#00873E"></i>Muito aderentes</span></div></div></div>`;
+ <div class="leg"><span><i style="background:var(--brown)"></i>Iniciativas vinculadas</span><span><i style="background:var(--green)"></i>Muito aderentes</span></div></div></div>`;
  radar(l)}
 function radar(l){
  const n=DATA.oe.length,cx=260,cy=180,R=112,ang=k=>-Math.PI/2+2*Math.PI*k/n,pt=(k,r)=>[cx+r*Math.cos(ang(k)),cy+r*Math.sin(ang(k))];
@@ -252,25 +266,40 @@ function radar(l){
  for(let g=1;g<=4;g++){s+=`<polygon points="${DATA.oe.map((_,k)=>pt(k,R*g/4).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="${cx+4}" y="${cy-R*g/4+3}" font-size="8" fill="#999">${Math.round(mx*g/4)}</text>`}
  DATA.oe.forEach((o,k)=>{const[x,y]=pt(k,R),[lx,ly]=pt(k,R+16),c=Math.cos(ang(k));
   s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E0D0B0"/><text x="${lx}" y="${ly+3}" font-size="10" font-weight="700" fill="#333" text-anchor="${Math.abs(c)<.2?'middle':c>0?'start':'end'}">OE ${o.id} · ${esc(CFG.oeCurto[k]||'')}</text>`});
- [[a,'#A0662A'],[b,'#00873E']].forEach(([v,c])=>{
+ [[a,'#632704'],[b,'#0f4147']].forEach(([v,c])=>{
   s+=`<polygon points="${v.map((x,k)=>pt(k,R*x/mx).join(',')).join(' ')}" fill="${c}" fill-opacity=".16" stroke="${c}" stroke-width="2"/>`;
   v.forEach((x,k)=>{const[px,py]=pt(k,R*x/mx);s+=`<circle cx="${px}" cy="${py}" r="3.5" fill="${c}"><title>OE ${k+1}: ${x}</title></circle>`})});
  $('rad').innerHTML=s}
 
 function selOE(k){S.oe=k;r1()}
-function abre(id){const i=DATA.ini.find(x=>x.id===id);if(!i.dirs.length)return;const d=DIR[i.dirs[0]];S.tema=d.tema;S.dz=d.desafio;S.dr=d.i;S.ini=id;go(3)}
+
+/* Aba 1 Ajustada: Cards separados e colunas com proporção alterada */
 function r1(){
  const l=F(),o=DATA.oe.find(x=>x.id===S.oe),v=l.filter(i=>i.oeV===o.id).sort((x,y)=>x.id.localeCompare(y.id));
  const c=s=>v.filter(i=>i.sit===s).length,out=v.length-c('Em execução')-c('Em validação');
  $('v1').innerHTML=`<div class="g5">${DATA.oe.map(x=>`<div class="oc ${x.id===S.oe?'on':''}" onclick="selOE(${x.id})"><b>Obj. Estratégico ${x.id}</b><span>${esc(x.nome)}</span></div>`).join('')}</div>
- <div class="g3"><div class="card g"><div class="ct">O que almeja?</div><div class="sc"><p class="txt">${esc(o.almeja||'')}</p>
- <div class="ct" style="margin:14px 0 8px">Visão de futuro</div><ul class="vis">${o.visao.map(x=>`<li><b>${esc(x.t)}:</b> ${esc(x.d)}</li>`).join('')}</ul></div></div>
- <div class="card g"><div class="ct">Metas PNM 2050</div><div class="mt"><span>Meta 1</span><span>Meta 2</span><span>Meta 3</span></div>
- <div class="empty">Os dados das metas do PNM 2050 (cenário desejado × valor atual) ainda não constam na planilha. Ao incluí-los, o gráfico de evolução aparece aqui.</div></div>
- <div class="card g"><div class="ct">Iniciativas do PMA 2027 vinculadas</div><div class="sc"><ul class="il">${v.length?v.map(i=>`<li style="${i.dirs.length?'':'cursor:default'}" onclick="abre('${i.id}')" title="${esc(i.nome)}"><span class="dot" style="background:${cor(i)}"></span><span style="flex:1">${esc(i.curto||i.nome)}</span><em>${ADER[i.ader==null?3:i.ader]}</em></li>`).join(''):'<li style="cursor:default">Nenhuma iniciativa com os filtros atuais.</li>'}</ul></div>
- <div class="tot"><div style="background:#3B1B04"><b>${v.length}</b>Total</div><div style="background:#00873E"><b>${c('Em execução')}</b>Em execução</div><div style="background:#F39C12"><b>${c('Em validação')}</b>Em validação</div><div style="background:#7A7A7A"><b>${out}</b>Estrutur./previstas</div></div></div></div>`}
+ <div class="g3-custom">
+    <!-- Coluna 1 Subdividida -->
+    <div class="col-left">
+        <div class="card g">
+            <div class="ct">O que almeja?</div>
+            <div class="sc"><p class="txt">${esc(o.almeja||'')}</p></div>
+        </div>
+        <div class="card g">
+            <div class="ct">Visão de futuro</div>
+            <div class="sc"><ul class="vis">${o.visao.map(x=>`<li><b>${esc(x.t)}:</b> ${esc(x.d)}</li>`).join('')}</ul></div>
+        </div>
+    </div>
+    
+    <!-- Coluna 2 (Metas - Mais larga) -->
+    <div class="card g"><div class="ct">Metas PNM 2050</div><div class="mt"><span>Meta 1</span><span>Meta 2</span><span>Meta 3</span></div>
+    <div class="empty">Os dados das metas do PNM 2050 (cenário desejado × valor atual) ainda não constam na planilha. Ao incluí-los, o gráfico de evolução aparece aqui.</div></div>
+    
+    <!-- Coluna 3 -->
+    <div class="card g"><div class="ct">Iniciativas do PMA 2027 vinculadas</div><div class="sc"><ul class="il">${v.length?v.map(i=>`<li style="${i.dirs.length?'':'cursor:default'}" onclick="abre('${i.id}')" title="${esc(i.nome)}"><span class="dot" style="background:${cor(i)}"></span><span style="flex:1">${esc(i.curto||i.nome)}</span><em>${ADER[i.ader==null?3:i.ader]}</em></li>`).join(''):'<li style="cursor:default">Nenhuma iniciativa com os filtros atuais.</li>'}</ul></div>
+    <div class="tot"><div style="background:var(--brown)"><b>${v.length}</b>Total</div><div style="background:var(--green)"><b>${c('Em execução')}</b>Em execução</div><div style="background:var(--gold)"><b>${c('Em validação')}</b>Em validação</div><div style="background:#7A7A7A"><b>${out}</b>Estrutur./previstas</div></div></div>
+ </div>`}
 
-/* MAPA DE TEMAS (Trocado para tag <img>) */
 function r2(){
  const l=F(),T=TEMAS.map((n,k)=>{const li=l.filter(i=>i.temas.includes(n));return{n,k,ni:li.length,nd:DATA.dirs.filter(x=>x.tema===n).length}});
  $('v2').innerHTML=`<div class="g4"><div class="kpi"><h4>Desafios com iniciativa</h4><b>${desDe(l).length}</b> <small>de ${NDES}</small></div><div class="kpi"><h4>Temas com iniciativas</h4><b>${T.filter(t=>t.ni).length}</b> <small>de ${T.length}</small></div><div class="kpi"><h4>Iniciativas</h4><b>${l.length}</b></div><div class="kpi"><h4>Diretrizes com iniciativa</h4><b>${dirsDe(l).length}</b> <small>de ${DATA.dirs.length}</small></div></div>
