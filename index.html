@@ -222,9 +222,7 @@ const CFG={
 /* CORES ORIGINAIS DE STATUS RESTAURADAS */
 const COR={'Em execução':'#00873E','Em validação':'#F39C12','Em fase de estruturação/planejamento':'#A0662A','Prevista para iniciar em 2027':'#7A7A7A'};
 const TIT=['PLANO DE METAS','OBJETIVOS ESTRATÉGICOS','MAPA DE TEMAS'];
-const SUB={PILARES:'Pilares são os grandes eixos estruturantes que sustentam o PNM 2050.',OBJ:'Objetivos Estratégicos orientam a formulação das políticas públicas de longo prazo do setor mineral.',DESAFIOS:'Desafios são os entraves críticos de natureza regulatória, tecnológica e socioambiental que precisam ser superados para o alcance do cenário desejado.',DIRETRIZES:'Diretrizes balizam a execução das ações governamentais pactuadas para superar cada desafio.'};
-
-/* MAPA DOS ARQUIVOS PNG RESTAURADO */
+/* MAPA DOS ARQUIVOS PNG RESTAURADO E ATUALIZADO */
 const IC={
   planta: 'socioambiental.png',
   eng: 'pesquisa-mineral.png',
@@ -233,7 +231,8 @@ const IC={
   diam: 'valor-social.png',
   pred: 'governanca.png',
   pica: 'criticos.png',
-  chat: 'comunicacao.png'
+  chat: 'comunicacao.png',
+  luz: 'ambienteRegulatorio.png'
 };
 
 const VISU=[
@@ -244,7 +243,8 @@ const VISU=[
   [/Valor Social/, 'tcv', 'diam'],
   [/Governan/, 'tca', 'pred'],
   [/Cr[ií]ticos/, 'tco', 'pica'],
-  [/Imagem/, 'tcm', 'chat']
+  [/Imagem/, 'tcm', 'chat'],
+  [/Regulat/, 'tcb', 'luz']
 ];
 
 const VIS=n=>{const v=VISU.find(x=>x[0].test(n))||[0,'tcm','eng'];return[v[1],IC[v[2]]]};
@@ -285,18 +285,34 @@ function r0(){
  <div class="mc dk big">${v.pnm==null?'Dado não disponível':v.pnm+' '+v.n}</div><div class="mc tan big">${l.length} Iniciativas</div>
  <div class="mc tan">${v.pnm==null?'Pilares não constam na base':'a serem superados até 2050'}</div><div class="mc dk">${v.pnm==null?'—':'associadas a '+v.pma+' '+v.n+' ('+pct(v.pma,v.pnm)+'%)'}</div></div></div>
  <div class="card"><div class="ct">Objetivos PNM 2050 x Iniciativas PMA 2027</div><svg class="rad" id="rad" viewBox="0 0 520 370"></svg>
- <div class="leg"><span><i style="background:#A0662A"></i>Iniciativas vinculadas</span><span><i style="background:#00873E"></i>Muito aderentes</span></div></div></div>`;
- radar(l)}
-function radar(l){
- const n=DATA.oe.length,cx=260,cy=180,R=112,ang=k=>-Math.PI/2+2*Math.PI*k/n,pt=(k,r)=>[cx+r*Math.cos(ang(k)),cy+r*Math.sin(ang(k))];
- const a=DATA.oe.map(o=>l.filter(i=>i.oeV===o.id).length),b=DATA.oe.map(o=>l.filter(i=>i.oeV===o.id&&i.ader===2).length),mx=Math.max(4,...a);
+ <div class="leg">
+    <span><i style="background:#7A7A7A"></i>PNM 2050</span>
+    <span><i style="background:#ce8f33"></i>Geral</span>
+    <span><i style="background:#6a8c6b"></i>ANM</span>
+    <span><i style="background:#632704"></i>MME</span>
+    <span><i style="background:#0f4147"></i>SGB</span>
+ </div></div></div>`;
+ radar()}
+ 
+/* GRÁFICO DE ARANHA ESTÁTICO COM SEUS DADOS EXATOS */
+function radar(){
+ const n=5,cx=260,cy=180,R=112,ang=k=>-Math.PI/2+2*Math.PI*k/n,pt=(k,r)=>[cx+r*Math.cos(ang(k)),cy+r*Math.sin(ang(k))];
+ const mx=100; /* Normalizando até 100 para o radar */
+ const lbls = ['Sustentável e Inclusiva', 'Conhecimento Geológico', 'Agregação de Valor', 'Governança e Integridade', 'Soberania e Suprimento'];
+ const series = [
+   { c: '#7A7A7A', v: [80, 59, 34, 97, 57], n: 'PNM 2050' },
+   { c: '#ce8f33', v: [39.8, 42.8, 21.6, 54.3, 34.5], n: 'Geral' },
+   { c: '#6a8c6b', v: [9.2, 3.2, 1.23, 12.97, 1.27], n: 'ANM' },
+   { c: '#632704', v: [19.87, 12.61, 13.06, 23.83, 18.59], n: 'MME' },
+   { c: '#0f4147', v: [10.75, 27, 7.32, 17.53, 14.63], n: 'SGB' }
+ ];
  let s='';
- for(let g=1;g<=4;g++){s+=`<polygon points="${DATA.oe.map((_,k)=>pt(k,R*g/4).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="${cx+4}" y="${cy-R*g/4+3}" font-size="8" fill="#999">${Math.round(mx*g/4)}</text>`}
- DATA.oe.forEach((o,k)=>{const[x,y]=pt(k,R),[lx,ly]=pt(k,R+16),c=Math.cos(ang(k));
-  s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E0D0B0"/><text x="${lx}" y="${ly+3}" font-size="10" font-weight="700" fill="#333" text-anchor="${Math.abs(c)<.2?'middle':c>0?'start':'end'}">OE ${o.id} · ${esc(CFG.oeCurto[k]||'')}</text>`});
- [[a,'#A0662A'],[b,'#00873E']].forEach(([v,c])=>{
-  s+=`<polygon points="${v.map((x,k)=>pt(k,R*x/mx).join(',')).join(' ')}" fill="${c}" fill-opacity=".16" stroke="${c}" stroke-width="2"/>`;
-  v.forEach((x,k)=>{const[px,py]=pt(k,R*x/mx);s+=`<circle cx="${px}" cy="${py}" r="3.5" fill="${c}"><title>OE ${k+1}: ${x}</title></circle>`})});
+ for(let g=1;g<=4;g++){s+=`<polygon points="${[0,1,2,3,4].map(k=>pt(k,R*g/4).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="${cx+4}" y="${cy-R*g/4+3}" font-size="8" fill="#999">${Math.round(mx*g/4)}</text>`}
+ lbls.forEach((lbl,k)=>{const[x,y]=pt(k,R),[lx,ly]=pt(k,R+22),c=Math.cos(ang(k));
+  s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E0D0B0"/><text x="${lx}" y="${ly+4}" font-size="10" font-weight="700" fill="#333" text-anchor="${Math.abs(c)<.2?'middle':c>0?'start':'end'}">${lbl}</text>`});
+ series.forEach(ds=>{
+  s+=`<polygon points="${ds.v.map((v,k)=>pt(k,R*v/mx).join(',')).join(' ')}" fill="${ds.c}" fill-opacity=".16" stroke="${ds.c}" stroke-width="2"/>`;
+  ds.v.forEach((v,k)=>{const[px,py]=pt(k,R*v/mx);s+=`<circle cx="${px}" cy="${py}" r="3.5" fill="${ds.c}"><title>${ds.n}: ${v}</title></circle>`})});
  $('rad').innerHTML=s}
 
 function selOE(k){S.oe=k;r1()}
