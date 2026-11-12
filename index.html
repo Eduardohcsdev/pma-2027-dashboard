@@ -103,10 +103,11 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .tg {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    max-width: 800px;
+    justify-content: flex-start;
+    width: 770px; /* Largura exata para forçar 3 itens por linha com o deslocamento */
+    max-width: 100%;
     margin: 0 auto;
-    padding: 60px 0;
+    padding: 50px 0;
 }
 .tc {
     width: 190px;
@@ -123,20 +124,18 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
     transition: box-shadow 0.3s ease;
     gap: 3px;
     box-shadow: var(--sh);
-    margin: 22px;
+    margin: 15px; /* Margem simétrica para a primeira e terceira linha */
     position: relative;
 }
 
-/* Espalhamento orgânico mais amplo para simular a colmeia (Honeycomb) perfeitamente */
-.tc:nth-child(4), .tc:nth-child(5), .tc:nth-child(6) {
-    margin-top: -9px;
-    margin-bottom: -9px;
-}
+/* Colmeia (Honeycomb) - Deslocamento e Encaixe Perfeito */
+/* Afeta apenas a Linha 2 (Itens 4, 5 e 6) */
 .tc:nth-child(4) {
-    margin-left: 139px; 
+    margin-left: 125px; /* Empurra a linha inteira para a direita (metade de uma bolha + margem) */
 }
-.tc:nth-child(6) {
-    margin-right: -95px;
+.tc:nth-child(4), .tc:nth-child(5), .tc:nth-child(6) {
+    margin-top: -12px;    /* Puxa a segunda linha para cima (encaixando na primeira) */
+    margin-bottom: -12px; /* Puxa a terceira linha para cima (encaixando na segunda) */
 }
 
 .tc:hover {
@@ -202,8 +201,8 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 @media(max-width:1100px){
     .layout,.g2,.g3-custom,.tl{grid-template-columns:1fr}
     .g5,.g4{grid-template-columns:repeat(2,1fr)}
-    .tg{display:grid; grid-template-columns:repeat(2,1fr); padding: 20px 10px; max-width: 100%;} 
-    .tc:nth-child(n) {margin: 10px auto !important;} 
+    .tg{width: 100%; display: flex; justify-content: center; padding: 20px 0;} 
+    .tc:nth-child(n) {margin: 10px !important;} 
     #v1 .g3-custom{height:auto} 
     #v1 .g3-custom > div {height: auto; max-height: 520px;}
 }
@@ -351,7 +350,7 @@ function r0(){
 /* GRÁFICO DE ARANHA ESTÁTICO COM FORMAS E DADOS ATUALIZADOS */
 function radar(){
  const n=5,cx=350,cy=225,R=170,ang=k=>-Math.PI/2+2*Math.PI*k/n,pt=(k,r)=>[cx+r*Math.cos(ang(k)),cy+r*Math.sin(ang(k))];
- const mx=100;
+ const mx=75;
  const lbls = [
    'Mineração Sustentável\ne Inclusiva',
    'Conhecimento Geológico e de\nRecursos Minerais',
@@ -366,7 +365,7 @@ function radar(){
    { c: '#1f3864', v: [10.75, 27.00, 7.32, 17.53, 14.63], n: 'SGB', shape: 'square' }
  ];
  let s='';
- for(let g=1;g<=4;g++){s+=`<polygon points="${[0,1,2,3,4].map(k=>pt(k,R*g/4).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="${cx+4}" y="${cy-R*g/4+3}" font-size="9" fill="#999">${Math.round(mx*g/4)}</text>`}
+ for(let g=1;g<=3;g++){s+=`<polygon points="${[0,1,2,3,4].map(k=>pt(k,R*g/3).join(',')).join(' ')}" fill="none" stroke="#E0D0B0"/><text x="${cx+4}" y="${cy-R*g/3+3}" font-size="9" fill="#999">${Math.round(mx*g/3)}</text>`}
  lbls.forEach((lbl,k)=>{
   const[x,y]=pt(k,R), c=Math.cos(ang(k)), s_ang=Math.sin(ang(k));
   const lx=cx+(R+35)*c, ly=cy+(R+35)*s_ang;
