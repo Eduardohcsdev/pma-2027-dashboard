@@ -435,7 +435,7 @@ function r2(){
  });
 
  $('v2').innerHTML=`<div class="g4"><div class="kpi"><h4>Desafios com iniciativa</h4><b>${desDe(l).length}</b> <small>de ${NDES}</small></div><div class="kpi"><h4>Temas com iniciativas</h4><b>${T.filter(t=>t.ni).length}</b> <small>de ${T.length}</small></div><div class="kpi"><h4>Iniciativas</h4><b>${l.length}</b></div><div class="kpi"><h4>Diretrizes com iniciativa</h4><b>${dirsDe(l).length}</b> <small>de ${DATA.dirs.length}</small></div></div>
- <div class="card" style="border-top: 4px solid var(--gold);"><div class="ct">Temas estratégicos do PMA 2027</div>
+ <div class="card" style="padding: 0 0 16px; overflow: hidden; border: 2px solid var(--gold);"><div class="ct" style="background: var(--gold); color: #fff; padding: 9px 12px; margin: 0;">Temas estratégicos do PMA 2027</div>
  <div class="tg">${T.map(t=>`<div class="tc ${VIS(t.n)[0]}" title="${esc(t.n)}" onclick="abreTema(${t.k})"><img class="ti" src="${VIS(t.n)[1]}" alt="Ícone Temático"><b>${esc(t.n)}</b><span>${t.nd} diretrizes</span><span>${t.ni} iniciativa${t.ni===1?'':'s'}</span></div>`).join('')}</div></div>`}
  
 function abreTema(k){S.tema=TEMAS[k];S.dz=S.dr=S.ini=null;go(3)}
