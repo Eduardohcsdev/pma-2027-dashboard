@@ -194,7 +194,10 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 
 /* Rodapé Ajustado */
 .ft{background:var(--gold);border:0;border-radius:6px;color:#fff;font-size:11px;font-weight:700;padding:14px 14px;text-align:center}
-
+/* Chaves superiores PNM 2050 e PMA 2027 */
+.tree-grp{display:grid;grid-template-columns:repeat(3,1fr);column-gap:46px;margin-bottom:10px}
+.grp-lbl{text-align:center;font-size:12px;font-weight:800;color:var(--brown);text-transform:uppercase;letter-spacing:.5px}
+.grp-lbl::after{content:"";display:block;height:7px;margin-top:4px;border:2px solid var(--gold);border-bottom:0;border-radius:5px 5px 0 0}
 .tree{position:relative;display:grid;grid-template-columns:repeat(3,1fr);column-gap:46px;align-items:start}
 #wires{position:absolute;left:0;top:0;pointer-events:none}#wires path{fill:none;stroke:var(--brown);stroke-width:2}
 .tcol{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
@@ -449,15 +452,16 @@ function r3(){
  const c1=des.map((n,k)=>{const x=DATA.dirs.filter(d=>d.tema===S.tema&&d.desafio===n).length;return `<div class="nb ${n===S.dz?'sel':''}" id="n-d${k}" onclick="selDz(${k})"><span>${esc(n)}</span><em>${pl(x,'diretriz','diretrizes')}</em></div>`}).join('');
  const c2=S.dz?dd.map(d=>{const c=l.filter(x=>x.dirs.includes(d.i)).length;return `<div class="nb w ${d.i===S.dr?'sel':''}" id="n-r${d.i}" onclick="selDr(${d.i})"><span><b>${d.i}</b> · ${esc(d.txt)}</span><em${c?'':' class="z"'}>${c?pl(c,'iniciativa','iniciativas'):'sem iniciativas no PMA 2027'}</em></div>`}).join(''):hint('Clique em um desafio para ver as diretrizes');
  const c3=S.dr?(li.length?li.map(x=>`<div class="nb w ${x.id===S.ini?'sel':''}" id="n-i-${x.id}" style="border-left:6px solid ${cor(x)}" onclick="selIni('${x.id}')"><span>${esc(x.curto||x.nome)}</span><em>${esc(x.sit)}</em></div>`).join(''):'<div class="nb none">Sem iniciativas no PMA 2027</div>'):hint('Clique em uma diretriz para ver as iniciativas');
- $('v3').innerHTML=`<div class="back"><button class="btn" onclick="go(2)">← Voltar ao Mapa de Temas</button><h2>${esc(S.tema)}</h2></div>
- <div class="g2" style="grid-template-columns:1.9fr 1fr"><div class="card g"><div class="tree" id="tree"><svg id="wires"></svg>
+$('v3').innerHTML=`<div class="back"><button class="btn" onclick="go(2)">← Voltar ao Mapa de Temas</button><h2>${esc(S.tema)}</h2></div>
+ <div class="g2" style="grid-template-columns:1.9fr 1fr"><div class="card g">
+ <div class="tree-grp"><div class="grp-lbl" style="grid-column:span 2">PNM 2050</div><div class="grp-lbl">PMA 2027</div></div>
+ <div class="tree" id="tree"><svg id="wires"></svg>
  <div class="tcol"><div class="th">Desafios</div>${c1}</div><div class="tcol"><div class="th">Diretrizes</div>${c2}</div><div class="tcol"><div class="th">Iniciativas</div>${c3}</div></div></div>
  <div class="card g">${i?`<div class="dc"><div class="bx" style="font-size:12.5px">${esc(i.id)} · ${esc(i.nome)}</div>
  <div class="bx l"><b>Breve descrição:</b> ${esc(i.desc||i.resultado)}</div>
  <div class="row"><div class="bx">Natureza<span>${esc(i.nat)}</span></div><div class="bx">Unidade responsável<span>${esc(i.unidade)}</span></div></div>
  <div class="bx l"><b>Resultado esperado:</b> ${esc(i.resultado)}</div>
- <div class="row"><div class="bx l"><b>Indicadores</b><br>Base: <i>não informada</i><br>Meta 6/2027: ${m(i.mj)}<br>Meta 12/2027: ${m(i.md)}</div><div class="bx" style="background:${cor(i)};display:flex;align-items:center;justify-content:center">Status:<br>${esc(i.sit)}</div></div>
- <div class="bx l" style="font-size:10.5px"><b>Diretriz selecionada:</b> ${esc(DIR[S.dr].txt)}${i.sit_obs||i.nat_obs?'<br><b>Observação:</b> '+esc(i.sit_obs||i.nat_obs):''}</div></div>`:'<div class="ct">Detalhes da iniciativa</div><div class="empty">Navegue pela árvore (desafio → diretriz → iniciativa) e clique em uma iniciativa para ver os detalhes.</div>'}</div></div>`;
+ <div class="row"><div class="bx l"><b>Indicadores</b><br>Base: <i>não informada</i><br>Meta 6/2027: ${m(i.mj)}<br>Meta 12/2027: ${m(i.md)}</div><div class="bx" style="background:${cor(i)};display:flex;align-items:center;justify-content:center">Status:<br>${esc(i.sit)}</div></div></div>`:'<div class="ct">Detalhes da iniciativa</div><div class="empty">Navegue pela árvore (desafio → diretriz → iniciativa) e clique em uma iniciativa para ver os detalhes.</div>'}</div></div>`;
  requestAnimationFrame(liga)}
 function liga(){const c=$('tree'),w=$('wires');if(!c||S.tab!==3)return;const R=c.getBoundingClientRect(),P=(a,b)=>{const A=$(a),B=$(b);if(!A||!B)return'';const x=A.getBoundingClientRect(),y=B.getBoundingClientRect(),x1=x.right-R.left,y1=x.top+x.height/2-R.top,x2=y.left-R.left,y2=y.top+y.height/2-R.top,k=(x1+x2)/2;return `<path d="M${x1} ${y1}C${k} ${y1} ${k} ${y2} ${x2} ${y2}"/>`};
  let h='';if(S.dz){const k=DESAFIOS().indexOf(S.dz);DATA.dirs.filter(d=>d.tema===S.tema&&d.desafio===S.dz).forEach(d=>h+=P('n-d'+k,'n-r'+d.i))}
