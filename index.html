@@ -99,19 +99,16 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .kpi h4{background:var(--gold);color:#fff;font-size:11px;text-transform:uppercase;padding:7px 6px;margin:0 0 10px}
 .kpi b{font-size:26px;font-weight:900;color:#000}.kpi small{font-size:12px;color:#777;font-weight:600}
 
-/* MAPA DE TEMAS (Bolhas em formato Colmeia e Fixas) */
+/* MAPA DE TEMAS (Posições e Tamanhos Proporcionais à Referência) */
 .tg {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    width: 770px; /* Largura exata para forçar 3 itens por linha com o deslocamento */
+    position: relative;
+    width: 1000px;
+    height: 580px;
     max-width: 100%;
     margin: 0 auto;
-    padding: 50px 0;
 }
 .tc {
-    width: 190px;
-    height: 190px;
+    position: absolute;
     border-radius: 50%;
     border: 3px solid;
     display: flex;
@@ -119,27 +116,37 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 16px;
+    padding: 14px;
     cursor: pointer;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
     gap: 3px;
     box-shadow: var(--sh);
-    margin: 15px; /* Margem simétrica para a primeira e terceira linha */
-    position: relative;
+    margin: 0;
 }
 
-/* Colmeia (Honeycomb) - Deslocamento e Encaixe Perfeito */
-/* Afeta apenas a Linha 2 (Itens 4, 5 e 6) */
-.tc:nth-child(4) {
-    margin-left: 125px; /* Empurra a linha inteira para a direita (metade de uma bolha + margem) */
-}
-.tc:nth-child(4), .tc:nth-child(5), .tc:nth-child(6) {
-    margin-top: -12px;    /* Puxa a segunda linha para cima (encaixando na primeira) */
-    margin-bottom: -12px; /* Puxa a terceira linha para cima (encaixando na segunda) */
-}
+/* Posições e Tamanhos Individuais (Ordem do array 'order' no r2) */
+/* 1. Responsabilidade Socioambiental (14 diretrizes) */
+.tc:nth-child(1) { width: 255px; height: 255px; left: 10px;  top: 5px; }
+/* 2. Pesquisa Mineral (6 diretrizes) */
+.tc:nth-child(2) { width: 205px; height: 205px; left: 280px; top: 12px; }
+/* 3. Tecnologia e Agregação de Valor (5 diretrizes) */
+.tc:nth-child(3) { width: 185px; height: 185px; left: 405px; top: 375px; }
+/* 4. Conhecimento Geológico (9 diretrizes) */
+.tc:nth-child(4) { width: 220px; height: 220px; left: 215px; top: 215px; }
+/* 5. Mineração com Valor Social (11 diretrizes) */
+.tc:nth-child(5) { width: 240px; height: 240px; left: 470px; top: 115px; }
+/* 6. Governança Institucional (11 diretrizes) */
+.tc:nth-child(6) { width: 245px; height: 245px; left: 705px; top: 5px; }
+/* 7. Minerais Críticos e Estratégicos (9 diretrizes) */
+.tc:nth-child(7) { width: 225px; height: 225px; left: 10px;  top: 330px; }
+/* 8. Imagem e Comunicação Institucional (4 diretrizes) */
+.tc:nth-child(8) { width: 165px; height: 165px; left: 800px; top: 245px; }
+/* 9. Ambiente Regulatório (8 diretrizes) */
+.tc:nth-child(9) { width: 220px; height: 220px; left: 605px; top: 335px; }
 
 .tc:hover {
     box-shadow: 0 12px 20px -5px rgba(0,0,0,0.3);
+    transform: scale(1.02);
     z-index: 10;
 }
 
@@ -201,8 +208,8 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 @media(max-width:1100px){
     .layout,.g2,.g3-custom,.tl{grid-template-columns:1fr}
     .g5,.g4{grid-template-columns:repeat(2,1fr)}
-    .tg{width: 100%; display: flex; justify-content: center; padding: 20px 0;} 
-    .tc:nth-child(n) {margin: 10px !important;} 
+    .tg{width: 100%; height: auto; display: flex; flex-wrap: wrap; justify-content: center; padding: 20px 0;} 
+    .tc:nth-child(n) {position: relative !important; left: auto !important; top: auto !important; margin: 10px !important;} 
     #v1 .g3-custom{height:auto} 
     #v1 .g3-custom > div {height: auto; max-height: 520px;}
 }
@@ -414,7 +421,7 @@ function r1(){
     <div class="tot"><div style="background:#3B1B04"><b>${v.length}</b>Total</div><div style="background:#00873E"><b>${c('Em execução')}</b>Em execução</div><div style="background:#F39C12"><b>${c('Em validação')}</b>Em validação</div><div style="background:#7A7A7A"><b>${out}</b>Estrutur./previstas</div></div></div>
  </div>`}
 
-/* MAPA DE TEMAS COM BOLHAS ORGÂNICAS EM COLMEIA E ORDENADAS */
+/* MAPA DE TEMAS COM BOLHAS ORGÂNICAS E ORDENADAS */
 function r2(){
  const l=F();
  let T=TEMAS.map((n,k)=>{const li=l.filter(i=>i.temas.includes(n));return{n,k,ni:li.length,nd:DATA.dirs.filter(x=>x.tema===n).length}});
