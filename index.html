@@ -148,49 +148,65 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
 .kpi h4{background:var(--teal);color:#fff;font-size:11px;text-transform:uppercase;padding:7px 6px;margin:0 0 10px}
 .kpi b{font-size:26px;font-weight:900;color:#000}.kpi small{font-size:12px;color:#777;font-weight:600}
 
-/* MAPA DE TEMAS (Full view #v3) */
-.tg{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:26px;padding:28px 18px;width:100%;margin:0 auto}
-.tc{border-radius:50%;border:3px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;cursor:pointer;transition:box-shadow .25s ease,transform .2s ease;gap:3px;box-shadow:var(--sh)}
+/* MAPA DE TEMAS - GRADE SIMÉTRICA 3x3 HARMÔNICA (Full view #v3) */
+.tg{display:grid;grid-template-columns:repeat(3,220px);justify-content:center;justify-items:center;align-items:center;gap:24px 40px;padding:28px 20px;width:100%;margin:0 auto}
+.tc{
+  --ac: var(--teal);
+  --ac-soft: #EBF2F3;
+  --ac-bd: #B6CDD0;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle at 30% 22%,#ffffff 34%,var(--ac-soft) 100%);
+  border:2px solid var(--ac-bd);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:16px 18px;gap:6px;cursor:pointer;position:relative;
+  box-shadow:0 4px 12px rgba(15,65,71,.07),inset 0 0 0 3px rgba(255,255,255,.78);
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.tc:hover{
+  transform:translateY(-4px) scale(1.02);
+  border-color:var(--ac);
+  box-shadow:0 12px 24px -6px rgba(15,65,71,.18),0 0 0 4px var(--ac-soft);
+  z-index:10;
+}
+.tc-ic{
+  width:56px;height:56px;border-radius:50%;
+  background:#fff;border:1.5px solid var(--ac-bd);
+  display:flex;align-items:center;justify-content:center;flex:none;
+  box-shadow:0 2px 6px rgba(15,65,71,.07);
+  transition:border-color .22s ease,transform .22s ease;
+}
+.tc:hover .tc-ic{border-color:var(--ac);transform:scale(1.06)}
+.ti{width:32px;height:32px;flex:none;object-fit:contain;display:block}
+.tc b{
+  color:var(--teal);font-size:11.5px;font-weight:800;line-height:1.22;
+  max-width:176px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.tc-meta{
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  background:rgba(255,255,255,.88);border:1px solid var(--ac-bd);
+  border-radius:12px;padding:3px 11px;margin-top:1px;
+  transition:border-color .22s ease,background .22s ease;
+}
+.tc:hover .tc-meta{border-color:var(--ac);background:#fff}
+.tc-meta span{color:#475569;font-size:10px;font-weight:700;line-height:1.25;white-space:nowrap}
+.tc-meta span:last-child{color:var(--ac);font-weight:800}
 
-/* Tamanhos Individuais proporcionais (Tela Completa #v3) */
-.tc:nth-child(1){width:245px;height:245px}
-.tc:nth-child(2){width:200px;height:200px}
-.tc:nth-child(3){width:185px;height:185px}
-.tc:nth-child(4){width:215px;height:215px}
-.tc:nth-child(5){width:230px;height:230px}
-.tc:nth-child(6){width:235px;height:235px}
-.tc:nth-child(7){width:220px;height:220px}
-.tc:nth-child(8){width:168px;height:168px}
-.tc:nth-child(9){width:215px;height:215px}
+/* Escala compacta e simétrica 3x3 para as bolhas dentro da aba PNM 2050 (#v0) */
+.pn-tg{grid-template-columns:repeat(3,180px);gap:16px 22px;padding:8px 4px}
+.pn-tg .tc{width:180px;height:180px;padding:12px 14px;gap:5px}
+.pn-tg .tc-ic{width:44px;height:44px}
+.pn-tg .ti{width:25px;height:25px}
+.pn-tg .tc b{font-size:10.2px;line-height:1.18;max-width:146px}
+.pn-tg .tc-meta{padding:2px 9px;border-radius:10px}
+.pn-tg .tc-meta span{font-size:9.2px}
 
-/* Escala compacta e proporcional para as bolhas dentro da aba PNM 2050 (#v0) */
-.pn-tg{gap:16px;padding:10px 4px}
-.pn-tg .tc{padding:10px;border-width:2.5px}
-.pn-tg .tc .ti{width:36px;height:36px;margin-bottom:4px}
-.pn-tg .tc b{font-size:10.5px;line-height:1.18}
-.pn-tg .tc span{font-size:10px}
-.pn-tg .tc:nth-child(1){width:196px;height:196px}
-.pn-tg .tc:nth-child(2){width:166px;height:166px}
-.pn-tg .tc:nth-child(3){width:154px;height:154px}
-.pn-tg .tc:nth-child(4){width:176px;height:176px}
-.pn-tg .tc:nth-child(5){width:186px;height:186px}
-.pn-tg .tc:nth-child(6){width:190px;height:190px}
-.pn-tg .tc:nth-child(7){width:180px;height:180px}
-.pn-tg .tc:nth-child(8){width:146px;height:146px}
-.pn-tg .tc:nth-child(9){width:176px;height:176px}
-
-.tc:hover{box-shadow:0 12px 20px -5px rgba(0,0,0,.28);transform:scale(1.03);z-index:10}
-.tc b{color:#000;font-size:11.5px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
-.tc span{color:#333;font-size:11px;font-weight:600}
-.ti{width:48px;height:48px;margin-bottom:6px;flex:none;object-fit:contain}
-
-/* Cores das Bolhas (Originais Mantidas) */
-.tcv{background:#E1EBE2;border-color:#7A9F82}
-.tca{background:#FDF3E1;border-color:#D4A045}
-.tcm{background:#F0E6DD;border-color:#8E5A31}
-.tct{background:#DCE7E9;border-color:#4A7A82}
-.tco{background:#FDF3E1;border-color:#C87A31}
-.tcb{background:#dce7e8;border-color:var(--teal)} 
+/* Escala de Cores das Bolhas (Harmonizada com o Dashboard e os Ícones) */
+.tcv{--ac:#5E7E5F;--ac-soft:#EEF4EE;--ac-bd:#B8CEB9} /* Verde sálvia: Socioambiental / Valor Social */
+.tca{--ac:#C28424;--ac-soft:#FBF5E8;--ac-bd:#E3C794} /* Ocre dourado: Pesquisa / Governança */
+.tco{--ac:#C28424;--ac-soft:#FBF5E8;--ac-bd:#E3C794} /* Ocre dourado: Minerais Críticos */
+.tcm{--ac:#6A2F0F;--ac-soft:#F6EFEA;--ac-bd:#D4B8A6} /* Marrom terra: Tecnologia / Comunicação */
+.tct{--ac:#0F4147;--ac-soft:#EBF2F3;--ac-bd:#A3BFC3} /* Verde petróleo: Conhecimento Geológico */
+.tcb{--ac:#0F4147;--ac-soft:#EBF2F3;--ac-bd:#A3BFC3} /* Verde petróleo: Ambiente Regulatório */
 .tc.nd{background:#F4F4F4;border:2px dashed #BBB;color:#999;cursor:default;margin-top:0 !important;transform:none !important}
 
 .btn{background:var(--teal);color:#fff;border:0;padding:8px 14px;font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;text-transform:uppercase;transition:.2s;white-space:nowrap}
@@ -313,12 +329,21 @@ body{background:var(--bg);color:#222;padding:14px 20px;min-height:100vh;display:
     .pn-pilares-wrap{flex-direction:column;min-height:auto}
     #v2 .g3-custom{height:auto}
     #v2 .g3-custom > div{height:auto;max-height:520px}
+    .tg{grid-template-columns:repeat(3,196px);gap:18px 24px}
+    .tg .tc{width:196px;height:196px}
+}
+@media(max-width:720px){
+    .tg,.pn-tg{grid-template-columns:repeat(2,172px);gap:14px}
+    .tg .tc,.pn-tg .tc{width:172px;height:172px;padding:12px}
 }
 @media(max-width:600px){
     .tabs{grid-template-columns:1fr}
     .pma-exp-stats,.pma-exp-stats.s4{grid-template-columns:1fr 1fr}
     .modal-body .dc .row{grid-template-columns:1fr}
     .modal-title{flex-direction:column;align-items:flex-start;gap:4px}
+}
+@media(max-width:420px){
+    .tg,.pn-tg{grid-template-columns:1fr}
 }
 </style>
 <script>window.addEventListener('error',function(e){var m=(e.message||'').replace('Uncaught ','');if(/DATA is not defined/.test(m)){document.body.innerHTML='<div style="font:16px \'Segoe UI\',sans-serif;padding:40px;max-width:640px;margin:auto"><h2>Este arquivo é apenas o modelo</h2><p style="margin-top:10px">Ele não contém os dados. Abra o <b>dashboard_pma_2027.html</b> (ou gere um novo com <code>python gerar_dashboard.py planilha.xlsx template_dashboard.html saida.html</code>).</p></div>'}else{var d=document.createElement('div');d.style.cssText='background:#FFF3F3;border:2px solid #D9534F;color:#8A1F1B;padding:12px 16px;margin:10px 0;border-radius:8px;font:13px \'Segoe UI\',sans-serif';d.textContent='Erro no painel: '+m;document.body.insertBefore(d,document.body.firstChild)}})</script>
@@ -613,8 +638,9 @@ function renderPnContent() {
         });
         return `<div class="tg pn-tg">
                 ${T.map(t=>`<div class="tc ${VIS(t.n)[0]}" title="Explorar tema: ${esc(t.n)}" onclick="abreTema(${t.k}, 0)">
-                <img class="ti" src="${VIS(t.n)[1]}" alt="Ícone Temático">
-                <b>${esc(t.n)}</b><span>${t.nd} diretrizes</span><span>${t.ni} iniciativa${t.ni===1?'':'s'}</span></div>`).join('')}
+                <div class="tc-ic"><img class="ti" src="${VIS(t.n)[1]}" alt="Ícone Temático"></div>
+                <b>${esc(t.n)}</b>
+                <div class="tc-meta"><span>${t.nd} diretrizes</span><span>${t.ni} iniciativa${t.ni===1?'':'s'}</span></div></div>`).join('')}
                 </div>`;
     }
 }
@@ -884,7 +910,7 @@ function r3(){
  </div>
  <div class="g4"><div class="kpi"><h4>Desafios com iniciativa</h4><b>${desDe(l).length}</b> <small>de ${NDES}</small></div><div class="kpi"><h4>Temas com iniciativas</h4><b>${T.filter(t=>t.ni).length}</b> <small>de ${T.length}</small></div><div class="kpi"><h4>Iniciativas</h4><b>${l.length}</b></div><div class="kpi"><h4>Diretrizes com iniciativa</h4><b>${dirsDe(l).length}</b> <small>de ${DATA.dirs.length}</small></div></div>
  <div class="card" style="padding: 0 0 16px; overflow: hidden; border: 1px solid var(--bd);"><div class="ct" style="background: var(--teal); color: #fff; padding: 9px 12px; margin: 0;">Temas estratégicos do PMA 2027</div>
- <div class="tg">${T.map(t=>`<div class="tc ${VIS(t.n)[0]}" title="${esc(t.n)}" onclick="abreTema(${t.k}, 3)"><img class="ti" src="${VIS(t.n)[1]}" alt="Ícone Temático"><b>${esc(t.n)}</b><span>${t.nd} diretrizes</span><span>${t.ni} iniciativa${t.ni===1?'':'s'}</span></div>`).join('')}</div></div>`}
+ <div class="tg">${T.map(t=>`<div class="tc ${VIS(t.n)[0]}" title="${esc(t.n)}" onclick="abreTema(${t.k}, 3)"><div class="tc-ic"><img class="ti" src="${VIS(t.n)[1]}" alt="Ícone Temático"></div><b>${esc(t.n)}</b><div class="tc-meta"><span>${t.nd} diretrizes</span><span>${t.ni} iniciativa${t.ni===1?'':'s'}</span></div></div>`).join('')}</div></div>`}
 
 /* --- SUBPÁGINA 4: ÁRVORE DE INICIATIVAS POR TEMA --- */
 function abre(id){const i=DATA.ini.find(x=>x.id===id);if(!i.dirs.length)return;const d=DIR[i.dirs[0]];S.tema=d.tema;S.dz=d.desafio;S.dr=d.i;S.ini=id;go(4, S.tab)}
