@@ -625,7 +625,6 @@ function renderPnContent() {
 
 function r0(){
     const hdrTitle = S.pnTab === 'TEMA' ? 'Temas Estratégicos do PMA 2027' : (S.pnTab === 'OBJ. ESTRAT.' ? 'Objetivos Estratégicos do PNM 2050' : 'Pilares do PNM 2050');
-    const hdrAction = S.pnTab === 'TEMA' ? `<button class="btn-ghost" onclick="abreMapa(0)">Ver painel completo &#8599;</button>` : '';
     
     $('v0').innerHTML = `
     <div class="pn-layout">
@@ -651,7 +650,7 @@ function r0(){
         
         <!-- Direita Dinâmica -->
         <div class="pn-right">
-            <div class="pn-right-hdr"><span>${hdrTitle}</span>${hdrAction}</div>
+            <div class="pn-right-hdr"><span>${hdrTitle}</span></div>
             <div class="pn-right-body">
                 ${renderPnContent()}
             </div>
